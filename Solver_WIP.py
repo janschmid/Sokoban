@@ -112,6 +112,7 @@ def MoveSokoban(map, direction):
       WalkSokoban(map, currentPosition, nextPosition, '+')
     else:
       return None
+  CheckIfSolved(map)
   return copy.deepcopy(map)
 
 def hashList(Hash_ls,ls):
@@ -141,7 +142,7 @@ def CheckIfSolved(map):
     for k in range(len(map[i])):
       if(map[i][k] == '$'):
         return False
-  return True
+  raise Exception("We did it, it's solved!!!")
 
 def main():
     prev_states = []
@@ -152,11 +153,11 @@ def main():
     openList.append(MoveSokoban(map, "up"))
     count = 0
     while(count< len(openList)):
+      print (count)
       for d in directions:
         newMap = MoveSokoban(openList[count], d)
        
         if(hashList(newMap, prev_states) == False):
-          CheckIfSolved(newMap)
           openList.append(newMap)
       # newMapDown = MoveSokoban(openList[count], "down")
       # newMapLeft = MoveSokoban(openList[count], "left")
