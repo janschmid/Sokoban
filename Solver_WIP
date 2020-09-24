@@ -1,0 +1,37 @@
+import numpy as np
+
+
+
+
+def parse(map = 'Sokoban_map.txt'):
+  ### Line Parser ###
+  # Using readlines() 
+  map_txt = open(map, 'r') 
+  Lines = map_txt.readlines() 
+  
+  # Strips the newline character 
+  for line in Lines: 
+    line = line.strip("\n")
+  
+  map_arr = np.array(Lines)
+
+
+
+  def move_sokoban(map, direction)
+  switch ()
+    case wall
+    case can 
+    case empty
+    case goal
+    case can_on_goal
+
+  check hash
+
+
+
+def main():
+    parse()
+
+
+if __name__ == "__main__":
+  main()
