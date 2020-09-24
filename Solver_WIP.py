@@ -113,7 +113,7 @@ def MoveSokoban(map, direction):
     else:
       return None
   CheckIfSolved(map)
-  return copy.deepcopy(map)
+  return (map)
 
 def hashList(Hash_ls,ls):
   if(Hash_ls==None):
@@ -150,12 +150,12 @@ def main():
     map = parse()
     hashList(map, prev_states)
     openList=[]
-    openList.append(MoveSokoban(map, "up"))
+    openList.append(map)
     count = 0
     while(count< len(openList)):
       print (count)
       for d in directions:
-        newMap = MoveSokoban(openList[count], d)
+        newMap = MoveSokoban(copy.deepcopy(openList[count]), d)
        
         if(hashList(newMap, prev_states) == False):
           openList.append(newMap)
