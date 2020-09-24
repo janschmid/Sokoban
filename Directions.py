@@ -21,7 +21,7 @@ class Turn:
         self.rm = ev3.LargeMotor('outC');  assert self.rm.connected  # right motor
         
         self.speed = 500  # deg/sec, [-1000, 1000]
-        self.dt = 100 #ms
+        self.dt = 80 #ms
 
         self.stop_action = "coast"
         
@@ -29,18 +29,19 @@ class Turn:
         ang = self.gy.value()
         targetAng = ang
         if(direction == "left"):
-            targetAng +=90
-            while(ang<targetAng):
-                self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=0, stop_action=self.stop_action)
+            targetAng -=85
+            while(targetAng<ang):
+                self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-0.2), stop_action=self.stop_action)
                 self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed, stop_action=self.stop_action)
                 sleep(self.dt / 1000)
                 ang = self.gy.value()
+
             return
 
         elif(direction == "right"):
-            targetAng -=90
-            while(ang>targetAng):
-                self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=0, stop_action=self.stop_action)
+            targetAng +=85
+            while(targetAng>ang):
+                self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-0.2), stop_action=self.stop_action)
                 self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed, stop_action=self.stop_action)
                 sleep(self.dt / 1000)
                 ang= self.gy.value()

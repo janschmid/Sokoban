@@ -23,10 +23,9 @@ class LineFollower:
         self.rm = ev3.LargeMotor('outC');  assert self.rm.connected  # right motor
         # mm = ev3.MediumMotor('outD'); assert mm.connected  # medium motor
         
-        self.targetSpeed = 1000  # deg/sec, [-1000, 1000]
-        self.errorMultiplier = self.targetSpeed/150 # just try to keep max speed and corner aligned...
+        self.targetSpeed = 400  # deg/sec, [-1000, 1000]
         
-        self.lightThreashold = 20 #when return values of both line sensors is smaller then threashold -> corner
+        self.lightThreashold = 50 #when return values of both line sensors is smaller then threashold -> corner
         self.dt = 200 #ms
         self.stop_action = "coast"
 
@@ -35,9 +34,9 @@ class LineFollower:
 
 
         # PID tuning
-        Kp = 1  # proportional gain
-        Ki = 0  # integral gain
-        Kd = 0  # derivative gain
+        Kp = 1.2  # proportional gain
+        Ki = 0.000  # integral gain
+        Kd = 0.000  # derivative gain
 
         integral = 0
         previous_error = 0
@@ -52,19 +51,18 @@ class LineFollower:
                 return
             loopCount+=1
             # Calculate steering using PID algorithm
-            error = (self.lCs.value() - self.rCs.value()) * self.errorMultiplier
+            error = (self.lCs.value() - self.rCs.value())
             integral += (error * self.dt)
             derivative = (error - previous_error) / self.dt
 
             u = (Kp * error) + (Ki * integral) + (Kd * derivative)
+            
             speed = self.targetSpeed
 
             if((self.targetSpeed+abs(u))>1000):
                 speed = self.targetSpeed-abs(u)
-            print ("speed: {0}, speed+u: {1}, speed - u: {2}".format(speed, speed+u, speed-u))
             # run motors
-            self.lm.run_timed(time_sp=self.dt*1.3, speed_sp=(speed + u), stop_action=self.stop_action)
-            self.rm.run_timed(time_sp=self.dt*1.3, speed_sp=(speed - u), stop_action=self.stop_action)
-            sleep(self.dt / 1000)
+            self.lm.run_timed(time_sp=self.dt*1, speed_sp=(speed + u), stop_action=self.stop_action)
+            self.rm.run_timed(time_sp=self.dt*1, speed_sp=(speed - u), stop_action=self.stop_action)
 
             previous_error = error
