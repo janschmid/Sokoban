@@ -9,7 +9,7 @@ def parse(map = 'Sokoban_map.txt'):
   map_txt = open(map, 'r') 
   Lines = map_txt.readlines() 
   
-  count = 0
+
   map_ls = []
   # Strips the newline character 
   for line in Lines: 
