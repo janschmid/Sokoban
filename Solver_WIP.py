@@ -9,23 +9,31 @@ def parse(map = 'Sokoban_map.txt'):
   map_txt = open(map, 'r') 
   Lines = map_txt.readlines() 
   
+  count = 0
+  map_ls = []
   # Strips the newline character 
   for line in Lines: 
     line = line.strip("\n")
-  
-  map_arr = np.array(Lines)
+    temp = []
+    for ch in line:
+      temp.append(ch)
+    map_ls.append(temp)
+  print(map_ls)
 
 
 
-  def move_sokoban(map, direction)
-  switch ()
-    case wall
-    case can 
-    case empty
-    case goal
-    case can_on_goal
 
-  check hash
+
+#
+# def move_sokoban(map, direction):
+#  switch (){
+#  case 1: wall
+#  case 2: can 
+#  case 3: empty
+#  case 4: goal
+#  case 5: can_on_goal
+#  }
+#  check hash
 
 
 
