@@ -115,16 +115,15 @@ def MoveSokoban(map, direction):
   CheckIfSolved(map)
   return (map)
 
-def hashList(Hash_ls,ls):
-  if(Hash_ls==None):
+def hashList(map,hList):
+  if(map==None):
     return True
-
-  s = ' '.join([str(elem) for elem in ls]) 
+  s = ' '.join([str(elem) for elem in map]) 
   new_hash = hashlib.sha256(s.encode())
   new_hash = new_hash.hexdigest()
 
-  if (ismember(Hash_ls,new_hash)):
-    ls.append(new_hash)
+  if (ismember(hList,new_hash)):
+    hList.append(new_hash)
     return False
   return True
 
@@ -133,7 +132,7 @@ def hashList(Hash_ls,ls):
 
 def ismember(ls, num):
     for i in range(np.size(ls)):
-      if (i == num):
+      if (ls[i] == num):
         return 0
     return 1
   
@@ -147,6 +146,7 @@ def CheckIfSolved(map):
 def main():
     prev_states = []
     directions = ["up", "down", "left", "right"]
+    # directions = ["left", "right"]
     map = parse()
     hashList(map, prev_states)
     openList=[]
