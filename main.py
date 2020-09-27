@@ -7,9 +7,11 @@ from Directions import Turn
 # Main function
 if __name__ == "__main__":
     lineFollower = LineFollower()
-    # lineFollower.run()
+    lineFollower.run()
     directions = Turn()
+    #directions.TurnDebug("left")
+    #directions.TurnDebug("right")
+    while (1):
+        {
     lineFollower.run()
-    lineFollower.run()
-    
-    directions.TurnDebug("left")
+    }

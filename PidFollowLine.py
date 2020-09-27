@@ -19,11 +19,11 @@ class LineFollower:
         self.rCs.mode = 'COL-REFLECT'
 
         # motors
-        self.lm = ev3.LargeMotor('outA');  assert self.lm.connected  # left motor
-        self.rm = ev3.LargeMotor('outC');  assert self.rm.connected  # right motor
+        self.lm = ev3.LargeMotor('outC');  assert self.lm.connected  # left motor
+        self.rm = ev3.LargeMotor('outA');  assert self.rm.connected  # right motor
         # mm = ev3.MediumMotor('outD'); assert mm.connected  # medium motor
         
-        self.targetSpeed = 400  # deg/sec, [-1000, 1000]
+        self.targetSpeed = -400  # deg/sec, [-1000, 1000]
         
         self.lightThreashold = 50 #when return values of both line sensors is smaller then threashold -> corner
         self.dt = 200 #ms

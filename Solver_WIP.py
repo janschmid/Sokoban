@@ -30,6 +30,27 @@ def FindSokobanOnMap(map):
       if(map[i][k] == '@' or map[i][k] == '+'):
         return {"row": i, "column":k}
 
+def FindCansOnMap(map):
+  cans = []
+  for i in range(len(map)):
+    for k in range(len(map[0])):
+      if(map[i][k] == '$' or map[i][k] == '*'):
+        cans.append({"row": i, "column":k})
+  return cans
+
+def closestCan(soko_pos,cans_pos):
+  dist =[]
+  count = 0
+  for i in range(len(cans_pos)):
+    soko_x = int(soko_pos["row"])
+    soko_y = int(soko_pos["column"])
+    can_x = int(cans_pos[i]["row"])
+    can_y = int(cans_pos[i]["column"])
+    dist.append(np.sqrt(soko_x*can_x+soko_y*can_y))
+    
+  nearestcan = dist.index(min(dist))
+  return nearestcan
+
 def PositionOnMap(map, position):
   pos= map[int(position["row"])][int(position["column"])]
   return pos
@@ -75,6 +96,8 @@ def MoveBox(map, boxPosition, direction):
 
 def MoveSokoban(map, direction):
   currentPosition = FindSokobanOnMap(map)
+  cans = FindCansOnMap(map)
+  
   nextPosition = copy.copy(currentPosition)
 
   if(direction=="down"): 
@@ -148,12 +171,14 @@ def main():
     directions = ["up", "down", "left", "right"]
     # directions = ["left", "right"]
     map = parse()
+    
+    
     hashList(map, prev_states)
     openList=[]
     openList.append(map)
     count = 0
     while(count< len(openList)):
-      print (count)
+      #print (count)
       for d in directions:
         newMap = MoveSokoban(copy.deepcopy(openList[count]), d)
        

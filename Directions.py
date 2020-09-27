@@ -17,10 +17,10 @@ class Turn:
         # self.gy.mode = 'GYRO-ANG'; assert self.gy.connected
         # sleep(5) #wait 5 seconds until calibrated
         # # motors
-        self.lm = ev3.LargeMotor('outA');  assert self.lm.connected  # left motor
-        self.rm = ev3.LargeMotor('outC');  assert self.rm.connected  # right motor
+        self.lm = ev3.LargeMotor('outC');  assert self.lm.connected  # left motor
+        self.rm = ev3.LargeMotor('outA');  assert self.rm.connected  # right motor
         
-        self.speed = 500  # deg/sec, [-1000, 1000]
+        self.speed = -400  # deg/sec, [-1000, 1000]
         self.dt = 80 #ms
 
         self.stop_action = "coast"
@@ -31,8 +31,8 @@ class Turn:
         if(direction == "left"):
             targetAng -=85
             while(targetAng<ang):
-                self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-0.2), stop_action=self.stop_action)
-                self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed, stop_action=self.stop_action)
+                self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-0.2), stop_action=self.stop_action)
+                self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed, stop_action=self.stop_action)
                 sleep(self.dt / 1000)
                 ang = self.gy.value()
 
@@ -41,8 +41,8 @@ class Turn:
         elif(direction == "right"):
             targetAng +=85
             while(targetAng>ang):
-                self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-0.2), stop_action=self.stop_action)
-                self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed, stop_action=self.stop_action)
+                self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-0.2), stop_action=self.stop_action)
+                self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed, stop_action=self.stop_action)
                 sleep(self.dt / 1000)
                 ang= self.gy.value()
             return
