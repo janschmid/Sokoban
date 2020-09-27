@@ -95,9 +95,7 @@ def MoveBox(map, boxPosition, direction):
     
 
 def MoveSokoban(map, direction):
-  currentPosition = FindSokobanOnMap(map)
-  cans = FindCansOnMap(map)
-  
+  currentPosition = FindSokobanOnMap(map)  
   nextPosition = copy.copy(currentPosition)
 
   if(direction=="down"): 
