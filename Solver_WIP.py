@@ -50,7 +50,6 @@ def FindCansOnMap(map):
 
 def closestCan(soko_pos,cans_pos):
   dist =[]
-  count = 0
   for i in range(len(cans_pos)):
     soko_x = int(soko_pos["row"])
     soko_y = int(soko_pos["column"])
