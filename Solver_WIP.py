@@ -1,7 +1,17 @@
 import numpy as np
 import copy
 import hashlib
+from anytree import Node, RenderTree, LevelOrderGroupIter
+from anytree.exporter import DotExporter
+from joblib import Parallel, delayed
+import multiprocessing
+import asyncio
 
+def background(f):
+    def wrapped(*args, **kwargs):
+        return asyncio.get_event_loop().run_in_executor(None, f, *args, **kwargs)
+
+    return wrapped
 
 
 def parse(map = 'Sokoban_map.txt'):
@@ -81,7 +91,7 @@ def MoveBox(map, boxPosition, direction):
 
 
   if(int(nextPosition["column"])<0 or int(nextPosition["row"])<0 or 
-    int(nextPosition["column"]) > len(map) or int(nextPosition["column"])> len(map[0])):
+    int(nextPosition["row"]) > len(map) or int(nextPosition["column"])> len(map[0])):
     return False
   
   #free, let's go
@@ -111,7 +121,7 @@ def MoveSokoban(map, direction):
 
   #check if position is valid
   if(int(nextPosition["column"])<0 or int(nextPosition["row"])<0 or 
-    int(nextPosition["column"]) > len(map) or int(nextPosition["column"])> len(map[0])):
+    int(nextPosition["row"]) > len(map) or int(nextPosition["column"])> len(map[0])):
     return None
   
   if(PositionOnMap(map, nextPosition) == ' '):
@@ -124,6 +134,7 @@ def MoveSokoban(map, direction):
     #let's move the box
     if(MoveBox(map, nextPosition, direction)):
       WalkSokoban(map, currentPosition, nextPosition, '@')
+      CheckIfSolved(map)
     else:
       return None
   elif(PositionOnMap(map, nextPosition) == '.'):
@@ -133,23 +144,20 @@ def MoveSokoban(map, direction):
       WalkSokoban(map, currentPosition, nextPosition, '+')
     else:
       return None
-  CheckIfSolved(map)
   return (map)
+
 
 def hashList(map,hList):
   if(map==None):
-    return True
+    return None
   s = ' '.join([str(elem) for elem in map]) 
   new_hash = hashlib.sha256(s.encode())
   new_hash = new_hash.hexdigest()
 
   if (ismember(hList,new_hash)):
     hList.append(new_hash)
-    return False
-  return True
-
-
-
+    return new_hash
+  return None
 
 def ismember(ls, num):
     for i in range(np.size(ls)):
@@ -164,44 +172,36 @@ def CheckIfSolved(map):
         return False
   raise Exception("We did it, it's solved!!!")
 
+def AddLeafsMap(tree, directions, prev_states):
+  newStates=0
+  oldStates = 0
+  for leave in tree.leaves:
+    for d in directions:
+      newMap = MoveSokoban(copy.deepcopy(leave.map), d)
+      hash = hashList(newMap, prev_states)
+      if(hash != None):
+        Node(hash, parent = leave, map=newMap)
+        newStates+=1
+      else:
+        oldStates+=1
+  if(newStates==0):
+    raise Exception("No solution found...")
+
+  print ("new States: {0}   old States: {1}".format(newStates, oldStates))
+  
+
 def main():
     prev_states = []
     directions = ["up", "down", "left", "right"]
     # directions = ["left", "right"]
+
     map = parse()
-    
-    
-    hashList(map, prev_states)
-    openList=[]
-    openList.append(map)
-    count = 0
-    while(count< len(openList)):
-      #print (count)
-      for d in directions:
-        newMap = MoveSokoban(copy.deepcopy(openList[count]), d)
-       
-        if(hashList(newMap, prev_states) == False):
-          openList.append(newMap)
-      # newMapDown = MoveSokoban(openList[count], "down")
-      # newMapLeft = MoveSokoban(openList[count], "left")
-      # newMapRight = MoveSokoban(openList[count], "right")
-      
-      
-      # if(hashList(newMapUp, prev_states) == False):
-      #   openList.append(newMapUp)
+    hash = hashList(map, prev_states)
+    root = Node(hash, map=map)
 
-      # if(hashList(newMapDown, prev_states) == False):
-      #   openList.append(newMapDown)
-
-      # if(hashList(newMapLeft, prev_states) == False):
-      #   openList.append(newMapLeft)
-
-      # if(hashList(newMapRight, prev_states) == False):
-      #   openList.append(newMapRight)  
-      count+=1
-
-
-
+    while(True):
+      print ("steps: {0}".format(root.height+1))
+      AddLeafsMap(root, directions, prev_states)
 
 if __name__ == "__main__":
   main()
