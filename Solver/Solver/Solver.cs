@@ -5,11 +5,26 @@ using System.Data;
 using System.IO;
 using System.Linq;
 
+/// <summary>
+/// Sokoban solver (algorithm: brute force, not parallelized)
+/// Syntax for map (thanks to Pavel Klavik):
+/// “#” is a wall,
+/// “ ” is a free space,
+/// “$” is a box,
+/// “.” is a goal place,
+/// “*” is a boxes placed on a goal,
+/// “@” is for Sokoban and
+/// “+” is for Sokoban on a goal.
+/// </summary>
 public class SokobanSolver
 {
     //private HashSet<int> knownPositions;
     private Dictionary<int, SokobanSingleStep> knownPositions;
     private char[][] targetLocation;
+
+    /// <summary>
+    /// Create new instance of Sokoban solver
+    /// </summary>
     public SokobanSolver()
     {
         knownPositions = new Dictionary<int, SokobanSingleStep>();
