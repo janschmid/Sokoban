@@ -3,31 +3,28 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
 
 public class Module
 {
-    public HashSet<int> knownPositions;
+    //public HashSet<int> knownPositions;
+    Dictionary<int, KeyValuePair<int, Direction?>> knownPositions;
     public Module()
     {
-        knownPositions = new HashSet<int>();
-
+        knownPositions = new Dictionary<int, KeyValuePair<int, Direction?>>();
     }
 
     public void Go()
     {
         var prev_states = new List<object>();
         var directions = new List<Direction> {
-                Direction.up,
-                Direction.down,
-                Direction.left,
-                Direction.right
+                Direction.u,
+                Direction.d,
+                Direction.l,
+                Direction.r
             };
         // directions = ["left", "right"]
         char[][] map = Parse();
-        AddMapToHashList(map);
+        AddMapToHashList(map, null, null);
         List<char[][]> openList = new List<char[][]>(10000000);
 
         openList.Add(map);
@@ -35,16 +32,28 @@ public class Module
         for (int i = 0; i < openList.Count; i++)
         {
             if (i % 10000 == 0)
-                Console.WriteLine("Step: " + i+ "       Seconds: "+ watch.Elapsed.TotalSeconds);
+                Console.WriteLine("Step: " + i + "       Seconds: " + watch.Elapsed.TotalSeconds);
             foreach (var d in directions)
             {
                 char[][] newMap = openList[i].Select(a => a.ToArray()).ToArray();
-                MoveSokoban(newMap, d);
-                if (newMap != null && AddMapToHashList(newMap))
-                    openList.Add(newMap);
+                if (!MoveSokoban(newMap, d))
+                {
+                    if (newMap != null && AddMapToHashList(newMap, openList[i], d))
+                        openList.Add(newMap);
+                }
+                else
+                {
+                    //we solved it...
+                    AddMapToHashList(newMap, openList[i], d);
+                    FindPath(newMap);
+                    return;
+                }
             }
         }
     }
+
+
+
     public struct Point
     {
         public byte x { get; set; }
@@ -63,10 +72,10 @@ public class Module
 
     public enum Direction
     {
-        up = 0,
-        down = 1,
-        left = 2,
-        right = 3
+        u = 0,
+        d = 1,
+        l = 2,
+        r = 3
     }
     public static char[][] Parse(string textFile = "Sokoban_map2019.txt")
     {
@@ -90,7 +99,7 @@ public class Module
             {
                 if (map[i][k].Equals('@') || map[i][k].Equals('+'))
                 {
-                    return new Point(i, k);
+                    return new Point(k, i);
                 }
             }
         }
@@ -106,7 +115,7 @@ public class Module
             {
                 if (map[i][k].Equals('$') || map[i][k].Equals('*'))
                 {
-                    cans.Add(new Point(i, k));
+                    cans.Add(new Point(k, i));
                 }
             }
         }
@@ -130,18 +139,18 @@ public class Module
 
     public static object PositionOnMap(char[][] map, Point position)
     {
-        char pos = map[position.x][position.y];
+        char pos = map[position.y][position.x];
         return pos;
     }
 
     public static void SetPositionOnMap(char[][] map, Point position, char positionValue)
     {
-        map[position.x][position.y] = positionValue;
+        map[position.y][position.x] = positionValue;
     }
 
     public static void WalkSokoban(char[][] map, Point oldPosition, Point newPosition, char newPositionValue)
     {
-        map[newPosition.x][newPosition.y] = newPositionValue;
+        map[newPosition.y][newPosition.x] = newPositionValue;
         if (PositionOnMap(map, oldPosition).Equals('+'))
         {
             SetPositionOnMap(map, oldPosition, '.');
@@ -154,7 +163,7 @@ public class Module
 
     public static bool PointInRange(char[][] map, Point p)
     {
-        if (p.x > map.Length || p.y > map[0].Length)
+        if (p.y > map.Length || p.x > map[0].Length)
             return false;
         else
             return true;
@@ -165,10 +174,10 @@ public class Module
         Point nextPosition;
         switch (direction)
         {
-            case Direction.down: nextPosition = new Point(boxPosition.x, boxPosition.y + 1); break;
-            case Direction.up: nextPosition = new Point(boxPosition.x, boxPosition.y - 1); break;
-            case Direction.right: nextPosition = new Point(boxPosition.x + 1, boxPosition.y); break;
-            case Direction.left: nextPosition = new Point(boxPosition.x - 1, boxPosition.y); break;
+            case Direction.d: nextPosition = new Point(boxPosition.x, boxPosition.y + 1); break;
+            case Direction.u: nextPosition = new Point(boxPosition.x, boxPosition.y - 1); break;
+            case Direction.r: nextPosition = new Point(boxPosition.x + 1, boxPosition.y); break;
+            case Direction.l: nextPosition = new Point(boxPosition.x - 1, boxPosition.y); break;
             default: nextPosition = new Point(char.MaxValue, char.MaxValue); break;
         }
         if (!PointInRange(map, nextPosition))
@@ -189,18 +198,18 @@ public class Module
         return true;
     }
 
-    public static object MoveSokoban(char[][] map, Direction direction)
+    public static bool MoveSokoban(char[][] map, Direction direction)
     {
         Point? currentPosition = FindSokobanOnMap(map);
         if (currentPosition == null)
-            return null;
+            return false;
         Point nextPosition;
         switch (direction)
         {
-            case Direction.down: nextPosition = new Point(currentPosition.Value.x, currentPosition.Value.y + 1); break;
-            case Direction.up: nextPosition = new Point(currentPosition.Value.x, currentPosition.Value.y - 1); break;
-            case Direction.right: nextPosition = new Point(currentPosition.Value.x + 1, currentPosition.Value.y); break;
-            case Direction.left: nextPosition = new Point(currentPosition.Value.x - 1, currentPosition.Value.y); break;
+            case Direction.d: nextPosition = new Point(currentPosition.Value.x, currentPosition.Value.y + 1); break;
+            case Direction.u: nextPosition = new Point(currentPosition.Value.x, currentPosition.Value.y - 1); break;
+            case Direction.r: nextPosition = new Point(currentPosition.Value.x + 1, currentPosition.Value.y); break;
+            case Direction.l: nextPosition = new Point(currentPosition.Value.x - 1, currentPosition.Value.y); break;
             default: nextPosition = new Point(char.MaxValue, char.MaxValue); break;
         }
         if (!PointInRange(map, nextPosition))
@@ -214,7 +223,7 @@ public class Module
         else if (PositionOnMap(map, nextPosition).Equals('#'))
         {
             //wall, we can't go here, so here is a dead end...
-            return null;
+            return false;
         }
         else if (PositionOnMap(map, nextPosition).Equals('$'))
         {
@@ -222,11 +231,12 @@ public class Module
             if (MoveBox(map, nextPosition, direction))
             {
                 WalkSokoban(map, currentPosition.Value, nextPosition, '@');
-                CheckIfSolved(map);
+                if (CheckIfSolved(map))
+                    return true;
             }
             else
             {
-                return null;
+                return false;
             }
         }
         else if (PositionOnMap(map, nextPosition).Equals('.'))
@@ -241,20 +251,61 @@ public class Module
             }
             else
             {
-                return null;
+                return false;
             }
         }
-        return map;
+        return false;
     }
 
 
-    public bool AddMapToHashList(char[][] map)
+    public bool AddMapToHashList(char[][] map, char[][] oldMap, Direction? d)
     {
         if (map == null)
         {
             return false;
         }
+        int hashCode = GetHashFromMap(map);
+        if (knownPositions.ContainsKey(hashCode))
+            return false;
+        else
+        {
+            knownPositions.Add(hashCode, new KeyValuePair<int, Direction?>(GetHashFromMap(oldMap), d));
+            return true;
+        }
+    }
+
+    private void FindPath(char[][] targetMap)
+    {
+        List<Direction> path = new List<Direction>();
+        int hash = GetHashFromMap(targetMap);
+        KeyValuePair<int, Direction?> outVal;
+        int count = 0;
+        while (knownPositions.TryGetValue(hash, out outVal) && outVal.Key != 0)
+        {
+            hash = outVal.Key;
+            if (outVal.Value.HasValue)
+                path.Add(outVal.Value.Value);
+            count++;
+            Console.WriteLine(count);
+        }
+        path.Reverse();
+        TextWriter tw = new StreamWriter("SavedList.txt");
+        foreach (var d in path)
+        {
+            tw.Write(d);
+
+        }
+        tw.WriteLine("");
+        tw.WriteLine("Steps: " + count);
+        tw.Close();
+        
+    }
+
+    private int GetHashFromMap(char[][] map)
+    {
         string stringMap = "";
+        if (map == null)
+            return 0;
         for (int i = 0; i < map.Length; i++)
         {
             for (int k = 0; k < map[i].Length; k++)
@@ -262,17 +313,11 @@ public class Module
                 stringMap += map[i][k];
             }
         }
-        int hashCode = stringMap.GetHashCode();
-        if (knownPositions.Contains(hashCode))
-            return false;
-        else
-        {
-            knownPositions.Add(hashCode);
-            return true;
-        }
+        return stringMap.GetHashCode();
+
     }
 
-    public static object CheckIfSolved(char[][] map)
+    public static bool CheckIfSolved(char[][] map)
     {
         for (int i = 0; i < map.Length; i++)
         {
@@ -284,35 +329,7 @@ public class Module
                 }
             }
         }
-        throw new Exception("We did it, it's solved!!!");
+        return true;
+        //throw new Exception("We did it, it's solved!!!");
     }
-
-    //public static object AddLeafsMap(object tree, object directions, object prev_states)
-    //{
-    //    var newStates = 0;
-    //    var oldStates = 0;
-    //    foreach (var leave in tree.leaves)
-    //    {
-    //        foreach (var d in directions)
-    //        {
-    //            var newMap = MoveSokoban(copy.deepcopy(leave.map), d);
-    //            var hash = hashList(newMap, prev_states);
-    //            if (hash != null)
-    //            {
-    //                Node(hash, parent: leave, map: newMap);
-    //                newStates += 1;
-    //            }
-    //            else
-    //            {
-    //                oldStates += 1;
-    //            }
-    //        }
-    //    }
-    //    if (newStates == 0)
-    //    {
-    //        throw Exception("No solution found...");
-    //    }
-    //    Console.WriteLine("new States: {0}   old States: {1}".format(newStates, oldStates));
-    //}
-
 }
