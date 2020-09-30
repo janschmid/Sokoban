@@ -1,0 +1,13 @@
+(X: walls; .: paths; G: goal positions of cans; M: initial position of robot; J: initial positions of cans):
+XXXXXXXXXXXX
+XX...X.....X
+XX...X.GG..X
+XXJJJ.XGGXXX
+X.J....MXXXX
+X...X...XXXX
+XXXXXXXXXXXX
+
+Solution (l,r,u,d(left,right,up,down); L,R,U,D(Left,Right,Up,Down while pushing a can). 134 moves(42 pushes)):
+llllUdrruLdldlluRRRRRdrUUruulldRRdldlluluulldRurDD
+rdLLdlluRRRRRdrUUruulldRurDurrdLulldddllululDrdLdl
+luRRRRRdrUUdllulullDrddlluRRRRRdrU

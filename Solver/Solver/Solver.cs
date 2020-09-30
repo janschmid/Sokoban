@@ -58,7 +58,7 @@ public class SokobanSolver
         for (int i = 0; i < openList.Count; i++)
         {
             if (i % 10000 == 0)
-                Console.WriteLine("Step: " + i + "       Seconds: " + watch.Elapsed.TotalSeconds);
+                Console.WriteLine("Iteration: " + i + "       Seconds: " + watch.Elapsed.TotalSeconds);
 
             foreach (var directionToGo in directions)
             {
@@ -349,7 +349,11 @@ public class SokobanSolver
     /// <param name="debugOutputPath">File path where debug output get's stored (each map iteration, number of steps)</param>
     private void ExportResults(char[][] targetMap, string solutionFilePath, string debugOutputPath = "")
     {
-        List<SokobanSingleStep> path = new List<SokobanSingleStep>();
+        List<SokobanSingleStep> path = new List<SokobanSingleStep>(300);
+        path.Add(new SokobanSingleStep()
+        {
+            Map = targetMap,
+        });
         string str = "";
         int hash = GetHashFromMap(targetMap);
         SokobanSingleStep outVal;
@@ -366,7 +370,7 @@ public class SokobanSolver
         if (!string.IsNullOrEmpty(debugOutputPath))
         {
             mapWriter = new StreamWriter(debugOutputPath);
-            mapWriter.WriteLine("Steps: " + path.Count);
+            mapWriter.WriteLine("Steps: " + (path.Count-1));
             mapWriter.WriteLine("");
         }
 
