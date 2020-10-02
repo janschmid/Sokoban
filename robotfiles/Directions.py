@@ -51,3 +51,22 @@ class Turn:
             raise Exception("unknown direction")
 
 
+    def Backup(self):
+        time = 0
+        while(time < self.dt*11):
+            self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-1), stop_action=self.stop_action)
+            self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-1), stop_action=self.stop_action)
+            sleep(self.dt / 1000)
+            time += self.dt
+        return
+
+    def TurnAround(self):
+        ang = self.gy.value()
+        targetAng = ang
+        targetAng +=165
+        while(targetAng>ang):
+            self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-1), stop_action=self.stop_action)
+            self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed, stop_action=self.stop_action)
+            sleep(self.dt / 1000)
+            ang= self.gy.value()
+        return
