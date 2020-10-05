@@ -30,15 +30,18 @@ class LineFollower:
         self.stop_action = "coast"
 
     # Main method
-    def run(self):
+    def run(self, pushCan=False):
+        
+        if(pushCan):
+            startPosition = self.lm.position+self.rm.position
+            targetPosition = startPosition-920 #going backwards (robot design)
         # PID tuning
         Kp = 1.2  # proportional gain
         # Ki = 0.000  # integral gain
         # Kd = 0.000  # derivative gain
 
         integral = 0
-        previous_error = 0
-
+        previous_error = 0   
         # initial measurment
         target_value = 0 # left and right color sensor should return same brightness -> driving in the middle of line
         # Start the main loop
@@ -49,6 +52,9 @@ class LineFollower:
                 return
             else:
                 self.lightThreashold = (self.lCs.value() + self.rCs.value())*0.7
+            
+            if(pushCan and (self.lm.position+self.rm.position<targetPosition)):
+                return
                 # print ("It{1};  Light threashold: {0}".format(lightThreashold, loopCount))
             loopCount+=1
             # Calculate steering using PID algorithm
@@ -65,8 +71,10 @@ class LineFollower:
             # run motors
             self.lm.run_forever(speed_sp=(speed + u))
             self.rm.run_forever(speed_sp=(speed - u))
+            
+            
             # self.lm.run_timed(time_sp=self.dt*1, speed_sp=(speed + u), stop_action=self.stop_action)
             # self.rm.run_timed(time_sp=self.dt*1, speed_sp=(speed - u), stop_action=self.stop_action)
-            sleep(self.dt / 1000)
+            # sleep(self.dt / 1000)
             # previous_error = error
 

@@ -15,14 +15,14 @@ if __name__ == "__main__":
     drive = ReadInDirection()
     a = True
     count=0
-    while (a):
-        a = drive.run()
-
+     while (a):
+         a = drive.run()
     lm.run_forever(speed_sp=0)
     rm.run_forever(speed_sp=0)
         
-    
-    
+    sound = ev3.Sound()
+    sound.speak("Mission completed")
+    exit()
     #lineFollower.run()
     #directions = Turn()
     #directions.TurnDebug("left")
