@@ -25,7 +25,7 @@ class ReadInDirection:
             print("End of file")
             return False
         
-        if (ch.lower() == self.previous.lower()):
+        if (ch == self.previous):
             lineFollower.run()
         #elif (self.previous == 'a'):
          #   lineFollower.run()

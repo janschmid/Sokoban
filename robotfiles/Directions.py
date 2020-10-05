@@ -20,31 +20,28 @@ class Turn:
         self.lm = ev3.LargeMotor('outC');  assert self.lm.connected  # left motor
         self.rm = ev3.LargeMotor('outA');  assert self.rm.connected  # right motor
         
-        self.speed = -400  # deg/sec, [-1000, 1000]
-        self.dt = 80 #ms
-
-        self.stop_action = "coast"
+        self.speed = -700  # deg/sec, [-1000, 1000]
+        self.stop_action = "hold"
+        self.totalDegrees = 430
+        
+        turnFactor = 0.9 # if value 0, overshoot
+        self.outerDegrees = self.totalDegrees*turnFactor
+        self.innerDegrees = self.totalDegrees*(turnFactor-1)
         
     def TurnDebug(self, direction):
-        ang = self.gy.value()
-        targetAng = ang
+        print ("out: {0}, in: {1} \n".format(self.outerDegrees, self.innerDegrees))
         if(direction == "left"):
-            targetAng -=85
-            while(targetAng<ang):
-                self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-0.2), stop_action=self.stop_action)
-                self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed, stop_action=self.stop_action)
-                sleep(self.dt / 1000)
-                ang = self.gy.value()
-
+            self.rm.run_to_rel_pos(position_sp=self.outerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
+            self.lm.run_to_rel_pos(position_sp=self.innerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
+            self.rm.wait_while('running')
+            self.lm.wait_while('running')
             return
 
         elif(direction == "right"):
-            targetAng +=85
-            while(targetAng>ang):
-                self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-0.2), stop_action=self.stop_action)
-                self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed, stop_action=self.stop_action)
-                sleep(self.dt / 1000)
-                ang= self.gy.value()
+            self.lm.run_to_rel_pos(position_sp=self.outerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
+            self.rm.run_to_rel_pos(position_sp=self.innerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
+            self.rm.wait_while('running')
+            self.lm.wait_while('running')
             return
 
         else:
@@ -53,20 +50,17 @@ class Turn:
 
     def Backup(self):
         time = 0
-        while(time < self.dt*11):
-            self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-1), stop_action=self.stop_action)
-            self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-1), stop_action=self.stop_action)
-            sleep(self.dt / 1000)
-            time += self.dt
+        dt=80
+        while(time < dt*11):
+            self.rm.run_timed(time_sp=dt*1.5, speed_sp=self.speed*(-1), stop_action=self.stop_action)
+            self.lm.run_timed(time_sp=dt*1.5, speed_sp=self.speed*(-1), stop_action=self.stop_action)
+            sleep(dt / 1000)
+            time += dt
         return
 
     def TurnAround(self):
-        ang = self.gy.value()
-        targetAng = ang
-        targetAng +=165
-        while(targetAng>ang):
-            self.lm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed*(-1), stop_action=self.stop_action)
-            self.rm.run_timed(time_sp=self.dt*1.5, speed_sp=self.speed, stop_action=self.stop_action)
-            sleep(self.dt / 1000)
-            ang= self.gy.value()
+        self.rm.run_to_rel_pos(position_sp=self.totalDegrees, speed_sp=self.speed, stop_action=self.stop_action)
+        self.lm.run_to_rel_pos(position_sp=-self.totalDegrees, speed_sp=self.speed, stop_action=self.stop_action)
+        self.rm.wait_while('running')
+        self.lm.wait_while('running')
         return

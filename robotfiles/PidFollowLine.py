@@ -23,20 +23,18 @@ class LineFollower:
         self.rm = ev3.LargeMotor('outA');  assert self.rm.connected  # right motor
         # mm = ev3.MediumMotor('outD'); assert mm.connected  # medium motor
         
-        self.targetSpeed = -400  # deg/sec, [-1000, 1000]
+        self.targetSpeed = -600  # deg/sec, [-1000, 1000]
         
         self.lightThreashold = 50 #when return values of both line sensors is smaller then threashold -> corner
-        self.dt = 200 #ms
+        self.dt = 10 #ms
         self.stop_action = "coast"
 
     # Main method
     def run(self):
-
-
         # PID tuning
         Kp = 1.2  # proportional gain
-        Ki = 0.000  # integral gain
-        Kd = 0.000  # derivative gain
+        # Ki = 0.000  # integral gain
+        # Kd = 0.000  # derivative gain
 
         integral = 0
         previous_error = 0
@@ -45,24 +43,30 @@ class LineFollower:
         target_value = 0 # left and right color sensor should return same brightness -> driving in the middle of line
         # Start the main loop
         loopCount = 0
-
         while not self.shut_down:
-            if (self.lCs.value()< self.lightThreashold and self.rCs.value() < self.lightThreashold and loopCount>5):
+            if (self.lCs.value() + self.rCs.value()< self.lightThreashold and loopCount>20):
+                print ("Return loop count: {0} with threashold {1}".format(loopCount, self.lightThreashold))
                 return
+            else:
+                self.lightThreashold = (self.lCs.value() + self.rCs.value())*0.7
+                # print ("It{1};  Light threashold: {0}".format(lightThreashold, loopCount))
             loopCount+=1
             # Calculate steering using PID algorithm
             error = (self.lCs.value() - self.rCs.value())
-            integral += (error * self.dt)
-            derivative = (error - previous_error) / self.dt
+            # integral += (error * self.dt)
+            # derivative = (error - previous_error) / self.dt
 
-            u = (Kp * error) + (Ki * integral) + (Kd * derivative)
+            u = (Kp * error) #+ (Ki * integral) + (Kd * derivative)
             
             speed = self.targetSpeed
 
             if((self.targetSpeed+abs(u))>1000):
                 speed = self.targetSpeed-abs(u)
             # run motors
-            self.lm.run_timed(time_sp=self.dt*1, speed_sp=(speed + u), stop_action=self.stop_action)
-            self.rm.run_timed(time_sp=self.dt*1, speed_sp=(speed - u), stop_action=self.stop_action)
+            self.lm.run_forever(speed_sp=(speed + u))
+            self.rm.run_forever(speed_sp=(speed - u))
+            # self.lm.run_timed(time_sp=self.dt*1, speed_sp=(speed + u), stop_action=self.stop_action)
+            # self.rm.run_timed(time_sp=self.dt*1, speed_sp=(speed - u), stop_action=self.stop_action)
+            sleep(self.dt / 1000)
+            # previous_error = error
 
-            previous_error = error
