@@ -28,17 +28,27 @@ class LineFollower:
         self.lightThreashold = 50 #when return values of both line sensors is smaller then threashold -> corner
         self.dt = 10 #ms
         self.stop_action = "coast"
+        self.totalCanPushDistance = 920
 
-    # Main method
-    def run(self, pushCan=False):
+
+    def run(self, lastPushOfCan=False):
+        if(not lastPushOfCan):
+            _run()
+        else:
+            _run(True)#push can forward
+            _run(True, True)##and move to target position back
+
+
+    def _run(self, pushCan=False, runBackwards=False):
         
         if(pushCan):
             startPosition = self.lm.position+self.rm.position
-            targetPosition = startPosition-920 #going backwards (robot design)
-        # PID tuning
+            if(not runBackwards):
+                targetPosition = startPosition-self.totalCanPushDistance #going backwards (robot design)
+            else:
+                targetPosition = startPosition+self.totalCanPushDistance
+        # P controller tuning
         Kp = 1.2  # proportional gain
-        # Ki = 0.000  # integral gain
-        # Kd = 0.000  # derivative gain
 
         integral = 0
         previous_error = 0   
@@ -55,26 +65,23 @@ class LineFollower:
             
             if(pushCan and (self.lm.position+self.rm.position<targetPosition)):
                 return
-                # print ("It{1};  Light threashold: {0}".format(lightThreashold, loopCount))
             loopCount+=1
             # Calculate steering using PID algorithm
             error = (self.lCs.value() - self.rCs.value())
-            # integral += (error * self.dt)
-            # derivative = (error - previous_error) / self.dt
 
             u = (Kp * error) #+ (Ki * integral) + (Kd * derivative)
-            
-            speed = self.targetSpeed
+            if(not runBackwards):
+                speed = self.targetSpeed
+            else:
+                speed = self.targetSpeed*(-1)
 
-            if((self.targetSpeed+abs(u))>1000):
-                speed = self.targetSpeed-abs(u)
+            if((abs(speed)+abs(u))>1000):
+                if(speed>0):
+                    speed = speed-abs(u)
+                else:
+                    speed = speed+abs(u)
+
             # run motors
             self.lm.run_forever(speed_sp=(speed + u))
             self.rm.run_forever(speed_sp=(speed - u))
-            
-            
-            # self.lm.run_timed(time_sp=self.dt*1, speed_sp=(speed + u), stop_action=self.stop_action)
-            # self.rm.run_timed(time_sp=self.dt*1, speed_sp=(speed - u), stop_action=self.stop_action)
-            # sleep(self.dt / 1000)
-            # previous_error = error
 
