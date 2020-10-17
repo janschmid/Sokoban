@@ -35,6 +35,7 @@ class LineFollower:
         if(not lastPushOfCan):
             _run()
         else:
+            _run()
             _run(True)#push can forward
             _run(True, True)##and move to target position back
 
