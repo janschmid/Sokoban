@@ -7,7 +7,7 @@ from Directions import Turn
 from ReadDirections import ReadInDirection
 
 
-def RunFromFile(self):
+def RunFromFile():
     lm = ev3.LargeMotor('outC');  assert lm.connected  # left motor
     rm = ev3.LargeMotor('outA');  assert rm.connected  # right motor
     drive = ReadInDirection()
@@ -15,32 +15,32 @@ def RunFromFile(self):
     a = True
     while (a):
         a = drive.run()
-  
+    lm.run_forever(speed_sp=(0))
+    rm.run_forever(speed_sp=(0))
 
 
-def RunDebug(self):
+def RunDebug():
     lm = ev3.LargeMotor('outC');  assert lm.connected  # left motor
     rm = ev3.LargeMotor('outA');  assert rm.connected  # right motor
     lineFollower = LineFollower()
     turn = Turn()
 
     #start....
-    lineFollower._run(True)
-    lineFollower._run(True)
+    lineFollower.zrun(True)
+    lineFollower.zrun(True)
     turn.TurnDebug("left")
     #end...
 
 # Main function
 if __name__ == "__main__":
     
-    RunDebug()
+    RunFromFile()
         
     sound = ev3.Sound()
     sound.speak("Mission completed")
+    sleep(10)
+
+    
     exit()
-    #lineFollower.run()
-    #directions = Turn()
-    #directions.TurnDebug("left")
-    #directions.TurnDebug("right")
         
     

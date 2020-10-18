@@ -8,64 +8,78 @@ from Directions import Turn
 class ReadInDirection:
     # Constructor
     def __init__(self):
-    
+        self.MoveList = []
         self.f = open('Sokoban_Moves.txt','r')
-        self.previous = 'u'
-        
-
-
+        ch = self.f.read(1)
+        while(ch):
+            self.MoveList.append(ch)
+            ch = self.f.read(1)
+            
+            
+        self.MoveList.append('End')
+        orientation = 'u'
+        for i in range(len(self.MoveList)):
+            if (self.MoveList[i] == 'End'):
+                break
+            if (self.MoveList[i] == orientation):
+                self.MoveList[i] = 'Straight'
+            else:
+                if (self.MoveList[i].isupper()):
+                    if (self.MoveList[i+1] != self.MoveList[i]):
+                        self.MoveList[i] = 'LastPush'
+                    else:
+                        orientationPlus = orientation.lower()
+                        self.MoveList[i] = findorientation(self.MoveList[i],orientation)
+                        orientation = orientationPlus
+                else:
+                    orientationPlus = self.MoveList[i].lower()
+                    self.MoveList[i] = findorientation(self.MoveList[i],orientation)
+                    orientation = orientationPlus
+        self.i = 0
 
 
     # Main method
     def run(self):
         lineFollower = LineFollower()
         directions = Turn()
-        ch = self.f.read(1)
-        if not ch:
-            print("End of file")
-            return False
         
-        if (ch == self.previous):
-            lineFollower.run()
-        #elif (self.previous == 'a'):
-         #   lineFollower.run()
-        elif (ch.isupper()):
-            turndir = findorientation(ch,self.previous)
-            print("isupper")
-            directions.TurnDebug(turndir)
-            lineFollower.run()
-            lineFollower.run()
-            directions.Backup()
-            directions.TurnAround()
-            lineFollower.run()
-            directions.TurnAround()
-        else:
-            turndir = findorientation(ch,self.previous)
-            print("else")
-            directions.TurnDebug(turndir)
-            lineFollower.run()
-            
 
-        self.previous = ch
+        if (self.MoveList[self.i] == 'End'):
+            return False
+
+        if (self.MoveList[self.i] == 'LastPush'):
+            lineFollower.run(True)
+            print("LastPush")
+        elif( (self.MoveList[self.i] == 'left') or (self.MoveList[self.i] == 'right') ):
+            directions.TurnDebug(self.MoveList[self.i])
+            lineFollower.run(False)
+            print("Turn")
+        else: # Straight
+            lineFollower.run(False)
+            print("Straight")
+
+        self.i += 1
         return True
 
-def findorientation(input,prev_input):
+
+
+def findorientation(input,orientation):
     turndir = ""
-    if (input.lower() == 'u' and (prev_input == 'l' or prev_input =='L')):
+    if (input.lower() == 'u' and (orientation == 'l' ) ):
         turndir = "right"
-    elif (input.lower() == 'u' and (prev_input == 'r' or prev_input =='R')):
+    elif (input.lower() == 'u' and (orientation == 'r' ) ):
         turndir = "left"
-    elif (input.lower() == 'l' and (prev_input == 'u' or prev_input =='U')):
+    elif (input.lower() == 'l' and (orientation == 'u' ) ):
         turndir = "left"
-    elif (input.lower() == 'l' and (prev_input == 'd' or prev_input =='D')):
+    elif (input.lower() == 'l' and (orientation == 'd' ) ):
         turndir = "right"
-    elif (input.lower() == 'r' and (prev_input == 'u' or prev_input =='U')):
+    elif (input.lower() == 'r' and (orientation == 'u' ) ):
         turndir = "right"
-    elif (input.lower() == 'r' and (prev_input == 'd' or prev_input =='D')):
+    elif (input.lower() == 'r' and (orientation == 'd' ) ):
         turndir = "left"
-    elif (input.lower() == 'd' and (prev_input == 'l' or prev_input =='L')):
+    elif (input.lower() == 'd' and (orientation == 'l' ) ):
         turndir = "left"
-    elif (input.lower() == 'd' and (prev_input == 'r' or prev_input =='R')):
+    elif (input.lower() == 'd' and (orientation == 'r' ) ):
         turndir = "right"
     
 
