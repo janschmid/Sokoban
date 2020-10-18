@@ -93,7 +93,13 @@ class ReadInDirection:
             self.lineFollower.run(True)
             print("LastPush")
         elif( (self.ExecutionList[self.i] == 'left') or (self.ExecutionList[self.i] == 'right') ):
-            self.directions.TurnDebug(self.ExecutionList[self.i])
+            if self.i>0:
+                if (self.ExecutionList[self.i-1] == 'LastPush'):
+                    self.directions.TurnDebug(self.ExecutionList[self.i],True)
+                else:
+                    self.directions.TurnDebug(self.ExecutionList[self.i],False)
+            else:
+                self.directions.TurnDebug(self.ExecutionList[self.i],False)
             self.lineFollower.run(False)
             print("Turn")
         elif (self.ExecutionList[self.i] == 'spin'):
