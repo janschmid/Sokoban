@@ -36,26 +36,29 @@ class ReadInDirection:
                     self.MoveList[i] = findorientation(self.MoveList[i],orientation)
                     orientation = orientationPlus
         self.i = 0
+        self.lineFollower = LineFollower()
+        self.directions = Turn()
+        for item in self.MoveList:
+            print ("{0}\n", item)
 
 
     # Main method
     def run(self):
-        lineFollower = LineFollower()
-        directions = Turn()
+
         
 
         if (self.MoveList[self.i] == 'End'):
             return False
 
         if (self.MoveList[self.i] == 'LastPush'):
-            lineFollower.run(True)
+            self.lineFollower.run(True)
             print("LastPush")
         elif( (self.MoveList[self.i] == 'left') or (self.MoveList[self.i] == 'right') ):
-            directions.TurnDebug(self.MoveList[self.i])
-            lineFollower.run(False)
+            self.directions.TurnDebug(self.MoveList[self.i])
+            self.lineFollower.run(False)
             print("Turn")
         else: # Straight
-            lineFollower.run(False)
+            self.lineFollower.run(False)
             print("Straight")
 
         self.i += 1

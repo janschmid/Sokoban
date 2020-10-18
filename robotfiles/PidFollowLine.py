@@ -29,17 +29,18 @@ class LineFollower:
         self.dt = 10 #ms
         self.stop_action = "coast"
         self.totalCanPushDistance = 920
-
+        self.totalBackupDistance = 850
 
 
     def zrun(self, pushCan=False, runBackwards=False):
             if(pushCan):
                 startPosition = self.lm.position+self.rm.position
                 if(runBackwards):
-                    targetPosition = startPosition-self.totalCanPushDistance #going backwards (robot design)
-                    print(runBackwards)
+                    targetPosition = startPosition+self.totalBackupDistance #going backwards (robot design)
+                    # print("runBackwards start: {0}, end: {1}".format(startPosition, targetPosition))
                 else:
-                    targetPosition = startPosition+self.totalCanPushDistance
+                    targetPosition = startPosition-self.totalCanPushDistance
+                    # print("pushCan start: {0}, end: {1}".format(startPosition, targetPosition))
             # P controller tuning
             Kp = 1.2  # proportional gain
 
@@ -50,13 +51,27 @@ class LineFollower:
             # Start the main loop
             loopCount = 0
             while not self.shut_down:
-                if (self.lCs.value() + self.rCs.value()< self.lightThreashold and loopCount>20):
-                    #print ("Return loop count: {0} with threashold {1}".format(loopCount, self.lightThreashold))
+                # go forward until cross
+                if (pushCan == False and self.lCs.value() + self.rCs.value()< self.lightThreashold and loopCount>20):
+                    # self.lm.run_forever(speed_sp=0)
+                    # self.rm.run_forever(speed_sp=0)
+                    # print ("Return loop count: {0} with threashold {1}".format(loopCount, self.lightThreashold))
                     return
                 else:
                     self.lightThreashold = (self.lCs.value() + self.rCs.value())*0.7
                 
-                if(pushCan and (self.lm.position+self.rm.position<targetPosition)):
+                if(pushCan and (runBackwards == False) and (self.lm.position+self.rm.position < targetPosition)):
+                    # self.lm.run_forever(speed_sp=0)
+                    # self.rm.run_forever(speed_sp=0)
+                    # sleep(0.05)
+                    # print("return pushB: {0}".format(self.lm.position + self.rm.position)) 
+                    return
+
+                if(pushCan and (runBackwards == True) and (self.lm.position+self.rm.position > targetPosition)):
+                    self.lm.run_forever(speed_sp=0)
+                    self.rm.run_forever(speed_sp=0)
+                    # sleep(0.05)
+                    # print("return push Back: {0}".format(self.lm.position + self.rm.position)) 
                     return
                 loopCount+=1
                 # Calculate steering using PID algorithm
@@ -68,7 +83,6 @@ class LineFollower:
                     speed = self.targetSpeed
                 else:
                     speed = self.targetSpeed*(-1)
-                    print('DEBUG')
 
                 if((abs(speed)+abs(u))>1000):
                     if(speed>0):

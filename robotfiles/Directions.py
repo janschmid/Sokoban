@@ -20,15 +20,19 @@ class Turn:
         self.lm = ev3.LargeMotor('outC');  assert self.lm.connected  # left motor
         self.rm = ev3.LargeMotor('outA');  assert self.rm.connected  # right motor
         
-        self.speed = -700  # deg/sec, [-1000, 1000]
+        self.speed = -1000  # deg/sec, [-1000, 1000]
         self.stop_action = "hold"
-        self.totalDegrees = 430
+        self.totalDegrees = 420
         
-        turnFactor = 0.9 # if value 0, overshoot
+        turnFactor = 0.15 # if value 0, overshoot
         self.outerDegrees = self.totalDegrees*turnFactor
         self.innerDegrees = self.totalDegrees*(turnFactor-1)
         
     def TurnDebug(self, direction):
+        self.lm.run_forever(speed_sp=0)
+        self.rm.run_forever(speed_sp=0)
+        # sleep(0.01)
+        # return
         print ("out: {0}, in: {1} \n".format(self.outerDegrees, self.innerDegrees))
         if(direction == "left"):
             self.rm.run_to_rel_pos(position_sp=self.outerDegrees, speed_sp=self.speed, stop_action=self.stop_action)

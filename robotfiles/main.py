@@ -24,16 +24,21 @@ def RunDebug():
     rm = ev3.LargeMotor('outA');  assert rm.connected  # right motor
     lineFollower = LineFollower()
     turn = Turn()
-
+    
     #start....
-    lineFollower.zrun(True)
-    lineFollower.zrun(True)
-    turn.TurnDebug("left")
-    #end...
+    lineFollower.run()
+    lineFollower.run()
 
+    turn.TurnDebug("right" )
+    lineFollower.run()
+    turn.TurnDebug("right" )
+    lineFollower.run()
+    #end...
+    lm.run_forever(speed_sp=0)
+    rm.run_forever(speed_sp=0)
 # Main function
 if __name__ == "__main__":
-    
+    # RunDebug()
     RunFromFile()
         
     sound = ev3.Sound()
