@@ -35,6 +35,18 @@ class ReadInDirection:
         elif (input.lower() == 'd' and (self.orientation == 'r' ) ):
             turndir = "right"
             self.orientation = 'd'
+        elif (input.lower() == 'd' and (self.orientation == 'u' ) ):
+            turndir = "spin"
+            self.orientation = 'd'
+        elif (input.lower() == 'u' and (self.orientation == 'd' ) ):
+            turndir = "spin"
+            self.orientation = 'u'
+        elif (input.lower() == 'r' and (self.orientation == 'l' ) ):
+            turndir = "spin"
+            self.orientation = 'r'         
+        elif (input.lower() == 'l' and (self.orientation == 'r' ) ):
+            turndir = "spin"
+            self.orientation = 'l' 
         return turndir
     
     # Constructor
@@ -84,6 +96,9 @@ class ReadInDirection:
             self.directions.TurnDebug(self.ExecutionList[self.i])
             self.lineFollower.run(False)
             print("Turn")
+        elif (self.ExecutionList[self.i] == 'spin'):
+            self.directions.TurnAround
+            self.lineFollower.run(False)
         else: # Straight
             self.lineFollower.run(False)
             print("Straight")
