@@ -5,7 +5,38 @@ from time import sleep
 from PidFollowLine import LineFollower
 from Directions import Turn
 
+   
+
 class ReadInDirection:
+    
+    def findorientation(self,input):
+        turndir = ""
+        if (input.lower() == 'u' and (self.orientation == 'l' ) ):
+            turndir = "right"
+            self.orientation = 'u'
+        elif (input.lower() == 'u' and (self.orientation == 'r' ) ):
+            turndir = "left"
+            self.orientation = 'u'
+        elif (input.lower() == 'l' and (self.orientation == 'u' ) ):
+            turndir = "left"
+            self.orientation = 'l'
+        elif (input.lower() == 'l' and (self.orientation == 'd' ) ):
+            turndir = "right"
+            self.orientation = 'l'
+        elif (input.lower() == 'r' and (self.orientation == 'u' ) ):
+            turndir = "right"
+            self.orientation = 'r'
+        elif (input.lower() == 'r' and (self.orientation == 'd' ) ):
+            turndir = "left"
+            self.orientation = 'r'
+        elif (input.lower() == 'd' and (self.orientation == 'l' ) ):
+            turndir = "left"
+            self.orientation = 'd'
+        elif (input.lower() == 'd' and (self.orientation == 'r' ) ):
+            turndir = "right"
+            self.orientation = 'd'
+        return turndir
+    
     # Constructor
     def __init__(self):
         charlist = []
@@ -26,7 +57,7 @@ class ReadInDirection:
             if (charlist[i].lower() == self.orientation):
                 self.ExecutionList.append('Straight')
             else:
-                self.ExecutionList.append(findorientation(charlist[i]))
+                self.ExecutionList.append(self.findorientation(charlist[i]))
             if (charlist[i].isupper()):
                 if (charlist[i+1] != charlist[i]):
                     self.ExecutionList.append('LastPush')
@@ -62,32 +93,4 @@ class ReadInDirection:
 
 
 
-    def findorientation(self,input):
-        turndir = ""
-        if (input.lower() == 'u' and (self.orientation == 'l' ) ):
-            turndir = "right"
-            self.orientation = 'u'
-        elif (input.lower() == 'u' and (self.orientation == 'r' ) ):
-            turndir = "left"
-            self.orientation = 'u'
-        elif (input.lower() == 'l' and (self.orientation == 'u' ) ):
-            turndir = "left"
-            self.orientation = 'l'
-        elif (input.lower() == 'l' and (self.orientation == 'd' ) ):
-            turndir = "right"
-            self.orientation = 'l'
-        elif (input.lower() == 'r' and (self.orientation == 'u' ) ):
-            turndir = "right"
-            self.orientation = 'r'
-        elif (input.lower() == 'r' and (self.orientation == 'd' ) ):
-            turndir = "left"
-            self.orientation = 'r'
-        elif (input.lower() == 'd' and (self.orientation == 'l' ) ):
-            turndir = "left"
-            self.orientation = 'd'
-        elif (input.lower() == 'd' and (self.orientation == 'r' ) ):
-            turndir = "right"
-            self.orientation = 'd'
-        
-
-        return turndir
+ 
