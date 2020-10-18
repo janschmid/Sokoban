@@ -98,7 +98,6 @@ class LineFollower:
             if(not lastPushOfCan):
                 self.zrun()
             else:
-                self.zrun()
                 self.zrun(True)#push can forward
                 self.zrun(True,True)##and move to target position back
                 

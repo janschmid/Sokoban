@@ -8,33 +8,30 @@ from Directions import Turn
 class ReadInDirection:
     # Constructor
     def __init__(self):
+        charlist = []
         self.MoveList = []
         self.f = open('Sokoban_Moves.txt','r')
         ch = self.f.read(1)
         while(ch):
-            self.MoveList.append(ch)
+            charlist.append(ch)
             ch = self.f.read(1)
             
             
-        self.MoveList.append('End')
+        charlist.append('End')
         orientation = 'u'
-        for i in range(len(self.MoveList)):
-            if (self.MoveList[i] == 'End'):
+        for i in range(len(charlist)):
+            if (charlist[i] == 'End'):
                 break
-            if (self.MoveList[i] == orientation):
+            if (charlist[i].lower() == orientation):
                 self.MoveList[i] = 'Straight'
             else:
-                if (self.MoveList[i].isupper()):
-                    if (self.MoveList[i+1] != self.MoveList[i]):
-                        self.MoveList[i] = 'LastPush'
-                    else:
-                        orientationPlus = orientation.lower()
-                        self.MoveList[i] = findorientation(self.MoveList[i],orientation)
-                        orientation = orientationPlus
-                else:
-                    orientationPlus = self.MoveList[i].lower()
-                    self.MoveList[i] = findorientation(self.MoveList[i],orientation)
-                    orientation = orientationPlus
+                orientationPlus = orientation.lower()
+                self.MoveList[i] = findorientation(charlist[i],orientation)
+                orientation = orientationPlus
+            if (charlist.isupper()):
+                if (charlist[i+1] != charlist[i]):
+                    self.MoveList.append('LastPush')
+        self.MoveList.append('End')
         self.i = 0
         self.lineFollower = LineFollower()
         self.directions = Turn()
