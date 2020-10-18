@@ -29,6 +29,7 @@ def RunDebug():
     # lineFollower.zrun(False, True)
     # lineFollower.zrun(False, True)
     # lineFollower.zrun(False, True)
+    # while(True):
     lineFollower.run()
     lineFollower.run(True)
     # lineFollower.zrun(False, True)
