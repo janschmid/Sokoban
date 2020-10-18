@@ -25,74 +25,83 @@ class LineFollower:
         
         self.targetSpeed = -600  # deg/sec, [-1000, 1000]
         
-        self.lightThreashold = 50 #when return values of both line sensors is smaller then threashold -> corner
+        self.lightThreashold = 70 #when return values of both line sensors is smaller then threashold -> corner
         self.dt = 10 #ms
         self.stop_action = "coast"
         self.totalCanPushDistance = 920
-        self.totalBackupDistance = 850
+        self.totalBackupDistance = 800
 
 
     def zrun(self, pushCan=False, runBackwards=False):
-            if(pushCan):
-                startPosition = self.lm.position+self.rm.position
-                if(runBackwards):
-                    targetPosition = startPosition+self.totalBackupDistance #going backwards (robot design)
-                    # print("runBackwards start: {0}, end: {1}".format(startPosition, targetPosition))
+        if(pushCan):
+            startPosition = self.lm.position+self.rm.position
+            if(runBackwards):
+                targetPosition = startPosition+self.totalBackupDistance #going backwards (robot design)
+                print("runBackwards start: {0}, end: {1}".format(startPosition, targetPosition))
+            else:
+                targetPosition = startPosition-self.totalCanPushDistance
+                # print("pushCan start: {0}, end: {1}".format(startPosition, targetPosition))
+        # P controller tuning
+        Kp = 1.5  # proportional gain
+
+        integral = 0
+        previous_error = 0   
+        # initial measurment
+        target_value = 0 # left and right color sensor should return same brightness -> driving in the middle of line
+        # Start the main loop
+        loopCount = 0
+        if(runBackwards):
+            self.lm.run_forever(speed_sp = 0)
+            self.rm.run_forever(speed_sp = 0)
+            sleep(0.1)
+        while not self.shut_down:
+            # go forward until cross
+            if (pushCan == False and self.lCs.value() + self.rCs.value()< self.lightThreashold and loopCount>20):
+                # self.lm.run_forever(speed_sp=0)
+                # self.rm.run_forever(speed_sp=0)
+                # print ("Return loop count: {0} with threashold {1}".format(loopCount, self.lCs.value() + self.rCs.value()))
+                return
+            # else:
+                # self.lightThreashold = (self.lCs.value() + self.rCs.value())*0.7
+            
+            if(pushCan and (runBackwards == False) and (self.lm.position+self.rm.position < targetPosition)):
+                # self.lm.run_forever(speed_sp=0)
+                # self.rm.run_forever(speed_sp=0)
+                # sleep(0.05)
+                # print("return pushB: {0}".format(self.lm.position + self.rm.position)) 
+                return
+
+            if(pushCan and (runBackwards == True) and (self.lm.position+self.rm.position > targetPosition)):
+                # self.lm.run_forever(speed_sp=0)
+                # self.rm.run_forever(speed_sp=0)
+                # sleep(0.5)
+                # print("return push Back: {0}".format(self.lm.position + self.rm.position)) 
+                return
+            loopCount+=1
+            # Calculate steering using PID algorithm
+            error = (self.lCs.value() - self.rCs.value())
+
+            u = (Kp * error) #+ (Ki * integral) + (Kd * derivative)
+            
+            if(not runBackwards):
+                speed = self.targetSpeed
+            else:
+                speed = self.targetSpeed*(-1)
+
+            if((abs(speed)+abs(u))>1000):
+                if(speed>0):
+                    speed = speed-abs(u)
                 else:
-                    targetPosition = startPosition-self.totalCanPushDistance
-                    # print("pushCan start: {0}, end: {1}".format(startPosition, targetPosition))
-            # P controller tuning
-            Kp = 1.2  # proportional gain
+                    speed = speed+abs(u)
 
-            integral = 0
-            previous_error = 0   
-            # initial measurment
-            target_value = 0 # left and right color sensor should return same brightness -> driving in the middle of line
-            # Start the main loop
-            loopCount = 0
-            while not self.shut_down:
-                # go forward until cross
-                if (pushCan == False and self.lCs.value() + self.rCs.value()< self.lightThreashold and loopCount>20):
-                    # self.lm.run_forever(speed_sp=0)
-                    # self.rm.run_forever(speed_sp=0)
-                    # print ("Return loop count: {0} with threashold {1}".format(loopCount, self.lightThreashold))
-                    return
-                else:
-                    self.lightThreashold = (self.lCs.value() + self.rCs.value())*0.7
-                
-                if(pushCan and (runBackwards == False) and (self.lm.position+self.rm.position < targetPosition)):
-                    # self.lm.run_forever(speed_sp=0)
-                    # self.rm.run_forever(speed_sp=0)
-                    # sleep(0.05)
-                    # print("return pushB: {0}".format(self.lm.position + self.rm.position)) 
-                    return
-
-                if(pushCan and (runBackwards == True) and (self.lm.position+self.rm.position > targetPosition)):
-                    self.lm.run_forever(speed_sp=0)
-                    self.rm.run_forever(speed_sp=0)
-                    # sleep(0.05)
-                    # print("return push Back: {0}".format(self.lm.position + self.rm.position)) 
-                    return
-                loopCount+=1
-                # Calculate steering using PID algorithm
-                error = (self.lCs.value() - self.rCs.value())
-
-                u = (Kp * error) #+ (Ki * integral) + (Kd * derivative)
-                
-                if(not runBackwards):
-                    speed = self.targetSpeed
-                else:
-                    speed = self.targetSpeed*(-1)
-
-                if((abs(speed)+abs(u))>1000):
-                    if(speed>0):
-                        speed = speed-abs(u)
-                    else:
-                        speed = speed+abs(u)
-
-                # run motors
+            # run motors
+            if(runBackwards == False):
                 self.lm.run_forever(speed_sp=(speed + u))
                 self.rm.run_forever(speed_sp=(speed - u))
+            else:
+                u=u/8
+                self.lm.run_forever(speed_sp=(speed - u))
+                self.rm.run_forever(speed_sp=(speed + u))
 
     def run(self, lastPushOfCan=False):
             if(not lastPushOfCan):

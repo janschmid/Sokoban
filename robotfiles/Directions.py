@@ -22,28 +22,35 @@ class Turn:
         
         self.speed = -1000  # deg/sec, [-1000, 1000]
         self.stop_action = "hold"
-        self.totalDegrees = 420
+        self.totalDegreesTurnAround = 480
+        self.totalDegrees = 395
         
-        turnFactor = 0.15 # if value 0, overshoot
+        turnFactor = 0.19 # if value 0, overshoot
         self.outerDegrees = self.totalDegrees*turnFactor
         self.innerDegrees = self.totalDegrees*(turnFactor-1)
         
-    def TurnDebug(self, direction):
+    def TurnDebug(self, direction, turnFromStandstill = False):
+        innerDegrees = self.innerDegrees
+        outerDegrees = self.outerDegrees
+        if(turnFromStandstill == True):
+            print ("True")
+            outerDegrees= self.outerDegrees*(1.2)
+            innerDegrees= self.innerDegrees*(1.2)
         self.lm.run_forever(speed_sp=0)
         self.rm.run_forever(speed_sp=0)
         # sleep(0.01)
         # return
-        print ("out: {0}, in: {1} \n".format(self.outerDegrees, self.innerDegrees))
+        # print ("out: {0}, in: {1} \n".format(self.outerDegrees, self.innerDegrees))
         if(direction == "left"):
-            self.rm.run_to_rel_pos(position_sp=self.outerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
-            self.lm.run_to_rel_pos(position_sp=self.innerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
+            self.rm.run_to_rel_pos(position_sp=outerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
+            self.lm.run_to_rel_pos(position_sp=innerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
             self.rm.wait_while('running')
             self.lm.wait_while('running')
             return
 
         elif(direction == "right"):
-            self.lm.run_to_rel_pos(position_sp=self.outerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
-            self.rm.run_to_rel_pos(position_sp=self.innerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
+            self.lm.run_to_rel_pos(position_sp=outerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
+            self.rm.run_to_rel_pos(position_sp=innerDegrees, speed_sp=self.speed, stop_action=self.stop_action)
             self.rm.wait_while('running')
             self.lm.wait_while('running')
             return
@@ -63,8 +70,13 @@ class Turn:
         return
 
     def TurnAround(self):
-        self.rm.run_to_rel_pos(position_sp=self.totalDegrees, speed_sp=self.speed, stop_action=self.stop_action)
-        self.lm.run_to_rel_pos(position_sp=-self.totalDegrees, speed_sp=self.speed, stop_action=self.stop_action)
+        self.lm.run_forever(speed_sp=0)
+        self.rm.run_forever(speed_sp=0)
+        self.rm.run_to_rel_pos(position_sp=self.totalDegreesTurnAround, speed_sp=self.speed, stop_action=self.stop_action)
+        self.lm.run_to_rel_pos(position_sp=-self.totalDegreesTurnAround, speed_sp=self.speed, stop_action=self.stop_action)
         self.rm.wait_while('running')
         self.lm.wait_while('running')
+        self.lm.run_forever(speed_sp=0)
+        self.rm.run_forever(speed_sp=0)
+        sleep(0.1)
         return

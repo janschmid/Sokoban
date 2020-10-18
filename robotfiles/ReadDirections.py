@@ -103,7 +103,7 @@ class ReadInDirection:
             self.lineFollower.run(False)
             print("Turn")
         elif (self.ExecutionList[self.i] == 'spin'):
-            self.directions.TurnAround
+            self.directions.TurnAround()
             self.lineFollower.run(False)
         else: # Straight
             self.lineFollower.run(False)
