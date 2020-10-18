@@ -10,6 +10,7 @@ class ReadInDirection:
     def __init__(self):
         charlist = []
         self.MoveList = []
+        self.ExecutionList = []
         self.f = open('Sokoban_Moves.txt','r')
         ch = self.f.read(1)
         while(ch):
@@ -23,19 +24,19 @@ class ReadInDirection:
             if (charlist[i] == 'End'):
                 break
             if (charlist[i].lower() == orientation):
-                self.MoveList[i] = 'Straight'
+                self.ExecutionList.append('Straight')
             else:
                 orientationPlus = orientation.lower()
-                self.MoveList[i] = findorientation(charlist[i],orientation)
+                self.ExecutionList.append(findorientation(charlist[i],orientation))
                 orientation = orientationPlus
-            if (charlist.isupper()):
+            if (charlist[i].isupper()):
                 if (charlist[i+1] != charlist[i]):
-                    self.MoveList.append('LastPush')
-        self.MoveList.append('End')
+                    self.ExecutionList.append('LastPush')
+        self.ExecutionList.append('End')
         self.i = 0
         self.lineFollower = LineFollower()
         self.directions = Turn()
-        for item in self.MoveList:
+        for item in self.ExecutionList:
             print ("{0}\n", item)
 
 
@@ -44,14 +45,14 @@ class ReadInDirection:
 
         
 
-        if (self.MoveList[self.i] == 'End'):
+        if (self.ExecutionList[self.i] == 'End'):
             return False
 
-        if (self.MoveList[self.i] == 'LastPush'):
+        if (self.ExecutionList[self.i] == 'LastPush'):
             self.lineFollower.run(True)
             print("LastPush")
-        elif( (self.MoveList[self.i] == 'left') or (self.MoveList[self.i] == 'right') ):
-            self.directions.TurnDebug(self.MoveList[self.i])
+        elif( (self.ExecutionList[self.i] == 'left') or (self.ExecutionList[self.i] == 'right') ):
+            self.directions.TurnDebug(self.ExecutionList[self.i])
             self.lineFollower.run(False)
             print("Turn")
         else: # Straight
