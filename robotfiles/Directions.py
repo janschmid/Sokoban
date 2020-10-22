@@ -25,7 +25,7 @@ class Turn:
         self.totalDegreesTurnAround = 480
         self.totalDegrees = 395
         
-        turnFactor = 0.19 # if value 0, overshoot
+        turnFactor = 0.22 # if value 0, overshoot
         self.outerDegrees = self.totalDegrees*turnFactor
         self.innerDegrees = self.totalDegrees*(turnFactor-1)
         
@@ -34,8 +34,8 @@ class Turn:
         outerDegrees = self.outerDegrees
         if(turnFromStandstill == True):
             print ("True")
-            outerDegrees= self.outerDegrees*(1.2)
-            innerDegrees= self.innerDegrees*(1.2)
+            outerDegrees= self.outerDegrees*(1.22)
+            innerDegrees= self.innerDegrees*(1.22)
         self.lm.run_forever(speed_sp=0)
         self.rm.run_forever(speed_sp=0)
         # sleep(0.01)
