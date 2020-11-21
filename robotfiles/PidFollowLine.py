@@ -23,13 +23,13 @@ class LineFollower:
         self.rm = ev3.LargeMotor('outA');  assert self.rm.connected  # right motor
         # mm = ev3.MediumMotor('outD'); assert mm.connected  # medium motor
         
-        self.targetSpeed = -700  # deg/sec, [-1000, 1000]
+        self.targetSpeed = -600  # deg/sec, [-1000, 1000]
         
         self.lightThreashold = 70 #when return values of both line sensors is smaller then threashold -> corner
         self.dt = 10 #ms
         self.stop_action = "coast"
         self.totalCanPushDistance = 920
-        self.totalBackupDistance = 820
+        self.totalBackupDistance = 800
 
 
     def zrun(self, pushCan=False, runBackwards=False):
@@ -42,7 +42,7 @@ class LineFollower:
                 targetPosition = startPosition-self.totalCanPushDistance
                 # print("pushCan start: {0}, end: {1}".format(startPosition, targetPosition))
         # P controller tuning
-        Kp = 2.0  # proportional gain
+        Kp = 1.5  # proportional gain
 
         integral = 0
         previous_error = 0   
@@ -93,8 +93,8 @@ class LineFollower:
                     speed = speed-abs(u)
                 else:
                     speed = speed+abs(u)
+
             # run motors
-            # print("Speed: {2}   {0} {1}".format(speed-u, speed+u, speed))
             if(runBackwards == False):
                 self.lm.run_forever(speed_sp=(speed + u))
                 self.rm.run_forever(speed_sp=(speed - u))
