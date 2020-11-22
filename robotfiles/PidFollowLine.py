@@ -109,4 +109,9 @@ class LineFollower:
             else:
                 self.zrun(True)#push can forward
                 self.zrun(True,True)##and move to target position back
+
+    def sleep(self, time):
+        self.lm.run_forever(speed_sp=0)
+        self.rm.run_forever(speed_sp=0)
+        sleep(time)
                 

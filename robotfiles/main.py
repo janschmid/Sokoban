@@ -5,19 +5,20 @@ from time import sleep
 from PidFollowLine import LineFollower
 from Directions import Turn
 from ReadDirections import ReadInDirection
-
+import time
 
 def RunFromFile():
     lm = ev3.LargeMotor('outC');  assert lm.connected  # left motor
     rm = ev3.LargeMotor('outA');  assert rm.connected  # right motor
     drive = ReadInDirection()
-
+    t0 = time.time()
     a = True
     while (a):
         a = drive.run()
+    t1 =time.time()
     lm.run_forever(speed_sp=(0))
     rm.run_forever(speed_sp=(0))
-
+    return (t1-t0)
 
 def RunDebug():
     lm = ev3.LargeMotor('outC');  assert lm.connected  # left motor
@@ -31,54 +32,27 @@ def RunDebug():
     # lineFollower.zrun(False, True)
     lineFollower.run()
     lineFollower.run(True)
+    turn.TurnAround()
+    
     # lineFollower.zrun(False, True)
     # lineFollower.zrun(True, True)
+    lineFollower.run()
+    lm.run_forever(speed_sp=0)
+    rm.run_forever(speed_sp=0)
     # lineFollower.run()
+   
+    turn.TurnDebug("right", True)
     # lineFollower.run()
-    turn.TurnDebug("left", True)
-    # lineFollower.run()
-    # turn.TurnDebug("left" )
-    # lineFollower.run()
-    # turn.TurnDebug("left" )
-    # lineFollower.run()
-    # turn.TurnDebug("left" )
-    # lineFollower.run()
-    # turn.TurnDebug("left" )
-    # lineFollower.run()
-    # turn.TurnDebug("left" )
-    # lineFollower.run()
-    # turn.TurnDebug("left" )
-    # lineFollower.run()
-    # turn.TurnDebug("left" )
-    # lineFollower.run()
-    # turn.TurnDebug("left" )
-    # lineFollower.run()
-    # turn.TurnDebug("left" )
-    # lineFollower.run()
-    # turn.TurnDebug("left" )
-    # # turn.TurnDebug("right" )
-    # # lineFollower.run()
-    # # lineFollower.run()
-    # # turn.TurnAround()
-    # # turn.TurnDebug("left" )
-    # # lineFollower.run()
-    # # turn.TurnDebug("left" )
-    # # lineFollower.run()
-    # # lineFollower.run()
-    # # turn.TurnDebug("left" )
-    # # lineFollower.run()
-    # # lineFollower.run()
-    # # lineFollower.run()
-    # #end...
+    lineFollower.run()
     lm.run_forever(speed_sp=0)
     rm.run_forever(speed_sp=0)
 # Main function
 if __name__ == "__main__":
-    # RunDebug()
-    RunFromFile()
+    #RunDebug()
+    elapsedTime = (int)(RunFromFile())
         
     sound = ev3.Sound()
-    sound.speak("Mission completed")
+    sound.speak("Mission completed in {0} seconds".format(elapsedTime))
     sleep(10)
 
     
