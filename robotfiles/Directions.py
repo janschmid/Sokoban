@@ -22,20 +22,23 @@ class Turn:
         
         self.speed = -1000  # deg/sec, [-1000, 1000]
         self.stop_action = "hold"
-        self.totalDegreesTurnAround = 488
-        self.totalDegrees = 395
+        self.totalDegreesTurnAround = 470
+        self.totalDegrees = 370
+        self.totalDegreesBackwards = 380*1.2
         
         turnFactor = 0.19 # if value 0, overshoot
         self.outerDegrees = self.totalDegrees*turnFactor
         self.innerDegrees = self.totalDegrees*(turnFactor-1)
-        
+        self.outerTotalDegreesBackwards = self.totalDegreesBackwards*turnFactor
+        self.innerTotalDegreesBackwards = self.totalDegreesBackwards*(turnFactor-1)
+
     def TurnDebug(self, direction, turnFromStandstill = False):
         innerDegrees = self.innerDegrees
         outerDegrees = self.outerDegrees
         if(turnFromStandstill == True):
             print ("True")
-            outerDegrees= self.outerDegrees*(1.2)
-            innerDegrees= self.innerDegrees*(1.2)
+            outerDegrees= self.outerTotalDegreesBackwards
+            innerDegrees= self.innerTotalDegreesBackwards
         self.lm.run_forever(speed_sp=0)
         self.rm.run_forever(speed_sp=0)
         # sleep(0.01)

@@ -62,7 +62,7 @@ class ReadInDirection:
             
             
         charlist.append('End')
-        self.orientation = 'u'
+        self.orientation = 'l'
         for i in range(len(charlist)):
             if (charlist[i] == 'End'):
                 break

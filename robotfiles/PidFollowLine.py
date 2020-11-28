@@ -25,7 +25,7 @@ class LineFollower:
         
         self.targetSpeed = -600  # deg/sec, [-1000, 1000]
         
-        self.lightThreashold = 70 #when return values of both line sensors is smaller then threashold -> corner
+        self.lightThreashold = 40 #when return values of both line sensors is smaller then threashold -> corner
         self.dt = 10 #ms
         self.stop_action = "coast"
         self.totalCanPushDistance = 920
