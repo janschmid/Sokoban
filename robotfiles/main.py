@@ -33,17 +33,9 @@ def RunDebug():
     lineFollower.run()
     lineFollower.run(True)
     turn.TurnAround()
-    
-    # lineFollower.zrun(False, True)
-    # lineFollower.zrun(True, True)
     lineFollower.run()
-    lm.run_forever(speed_sp=0)
-    rm.run_forever(speed_sp=0)
-    # lineFollower.run()
-   
-    turn.TurnDebug("right", True)
-    # lineFollower.run()
-    lineFollower.run()
+    lineFollower.run(True)
+    turn.TurnAround()
     lm.run_forever(speed_sp=0)
     rm.run_forever(speed_sp=0)
 # Main function

@@ -23,7 +23,7 @@ class LineFollower:
         self.rm = ev3.LargeMotor('outA');  assert self.rm.connected  # right motor
         # mm = ev3.MediumMotor('outD'); assert mm.connected  # medium motor
         
-        self.targetSpeed = -600  # deg/sec, [-1000, 1000]
+        self.targetSpeed = 600  # deg/sec, [-1000, 1000]
         
         self.lightThreashold = 40 #when return values of both line sensors is smaller then threashold -> corner
         self.dt = 10 #ms
@@ -36,13 +36,13 @@ class LineFollower:
         if(pushCan):
             startPosition = self.lm.position+self.rm.position
             if(runBackwards):
-                targetPosition = startPosition+self.totalBackupDistance #going backwards (robot design)
+                targetPosition = startPosition-self.totalBackupDistance #going backwards (robot design)
                 print("runBackwards start: {0}, end: {1}".format(startPosition, targetPosition))
             else:
-                targetPosition = startPosition-self.totalCanPushDistance
+                targetPosition = startPosition+self.totalCanPushDistance
                 # print("pushCan start: {0}, end: {1}".format(startPosition, targetPosition))
         # P controller tuning
-        Kp = 1.5  # proportional gain
+        Kp = 1.2  # proportional gain
 
         integral = 0
         previous_error = 0   
@@ -56,7 +56,7 @@ class LineFollower:
             sleep(0.1)
         while not self.shut_down:
             # go forward until cross
-            if (pushCan == False and self.lCs.value() + self.rCs.value()< self.lightThreashold and loopCount>20):
+            if (pushCan == False and self.lCs.value() + self.rCs.value()< self.lightThreashold and loopCount>25):
                 # self.lm.run_forever(speed_sp=0)
                 # self.rm.run_forever(speed_sp=0)
                 # print ("Return loop count: {0} with threashold {1}".format(loopCount, self.lCs.value() + self.rCs.value()))
@@ -64,14 +64,14 @@ class LineFollower:
             # else:
                 # self.lightThreashold = (self.lCs.value() + self.rCs.value())*0.7
             
-            if(pushCan and (runBackwards == False) and (self.lm.position+self.rm.position < targetPosition)):
+            if(pushCan and (runBackwards == False) and (self.lm.position+self.rm.position > targetPosition)):
                 # self.lm.run_forever(speed_sp=0)
                 # self.rm.run_forever(speed_sp=0)
                 # sleep(0.05)
                 # print("return pushB: {0}".format(self.lm.position + self.rm.position)) 
                 return
 
-            if(pushCan and (runBackwards == True) and (self.lm.position+self.rm.position > targetPosition)):
+            if(pushCan and (runBackwards == True) and (self.lm.position+self.rm.position < targetPosition)):
                 # self.lm.run_forever(speed_sp=0)
                 # self.rm.run_forever(speed_sp=0)
                 # sleep(0.5)
@@ -90,18 +90,18 @@ class LineFollower:
 
             if((abs(speed)+abs(u))>1000):
                 if(speed>0):
-                    speed = speed-abs(u)
-                else:
                     speed = speed+abs(u)
+                else:
+                    speed = speed-abs(u)
 
             # run motors
             if(runBackwards == False):
-                self.lm.run_forever(speed_sp=(speed + u))
-                self.rm.run_forever(speed_sp=(speed - u))
-            else:
-                u=u/8
                 self.lm.run_forever(speed_sp=(speed - u))
                 self.rm.run_forever(speed_sp=(speed + u))
+            else:
+                u=u/8
+                self.lm.run_forever(speed_sp=(speed + u))
+                self.rm.run_forever(speed_sp=(speed - u))
 
     def run(self, lastPushOfCan=False):
             if(not lastPushOfCan):
