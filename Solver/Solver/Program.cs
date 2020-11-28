@@ -13,9 +13,11 @@ namespace Solver
         {
             string fullPath = System.Reflection.Assembly.GetAssembly(typeof(SokobanSolver)).Location;
             string dir = Path.GetDirectoryName(Path.Combine(fullPath));
-            string targetPath = Path.Combine(dir, "../../../", "Tests//Map 2019");
             SokobanSolver solver = new SokobanSolver();
-            solver.Go(Path.Combine(targetPath, "Sokoban_map2019_formatted.txt"));
+            string targetPath = Path.Combine(dir, "../../../", "Tests//Map 2020");
+            solver.Go(Path.Combine(targetPath, "Sokoban_map2020.txt"));
+            //string targetPath = Path.Combine(dir, "../../../", "Tests//Map 2019");
+            //solver.Go(Path.Combine(targetPath, "Sokoban_map2019_formatted.txt"));
             solver.ExportResults(Path.Combine(targetPath, "RobotCommands.txt"), Path.Combine(targetPath, "StepDescription.txt"));
         }
     }

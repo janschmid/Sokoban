@@ -1,0 +1,842 @@
+Steps: 83
+
+XXXXXXXXXXXX
+XX   X    @X
+XX    $ $$ X
+XX.. XX$  XX
+X .. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X   @ X
+XX    $ $$ X
+XX.. XX$  XX
+X .. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X  @  X
+XX    $ $$ X
+XX.. XX$  XX
+X .. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX    $ @$ X
+XX.. XX$$ XX
+X .. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX    $@ $ X
+XX.. XX$$ XX
+X .. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX   $@  $ X
+XX.. XX$$ XX
+X .. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX  $@   $ X
+XX.. XX$$ XX
+X .. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX $@    $ X
+XX.. XX$$ XX
+X .. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX  @X     X
+XX $     $ X
+XX.. XX$$ XX
+X .. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX @ X     X
+XX $     $ X
+XX.. XX$$ XX
+X .. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX @     $ X
+XX.* XX$$ XX
+X .. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX       $ X
+XX.+ XX$$ XX
+X .* X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX       $ X
+XX..@XX$$ XX
+X .* X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX       $ X
+XX.. XX$$ XX
+X .*@X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX       $ X
+XX.. XX$$ XX
+X .* X  XXXX
+X   @   XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX       $ X
+XX.. XX$$ XX
+X .* X  XXXX
+X    @  XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX       $ X
+XX.. XX$$ XX
+X .* X  XXXX
+X     @ XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX       $ X
+XX.. XX$$ XX
+X .* X@ XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX       $ X
+XX.. XX$$ XX
+X .* X @XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX     $ $ X
+XX.. XX@$ XX
+X .* X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX     $ $ X
+XX.. XX $ XX
+X .* X @XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX     $ $ X
+XX.. XX $ XX
+X .* X  XXXX
+X      @XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX     $ $ X
+XX.. XX $ XX
+X .* X  XXXX
+X     @ XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX     $ $ X
+XX.. XX $ XX
+X .* X  XXXX
+X    @  XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX     $ $ X
+XX.. XX $ XX
+X .* X  XXXX
+X   @   XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX     $ $ X
+XX.. XX $ XX
+X .*@X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX     $ $ X
+XX.. XX $ XX
+X *+ X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX     $ $ X
+XX.+ XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX @   $ $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX  @  $ $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX   @ $ $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX    @$ $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X@    X
+XX     $ $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X @   X
+XX     $ $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X  @  X
+XX     $ $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX     $@$ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX    $@ $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX   $@  $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX  $@   $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX $@    $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX  @X     X
+XX $     $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX @ X     X
+XX $     $ X
+XX.. XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX @     $ X
+XX.* XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX  @    $ X
+XX.* XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX   @   $ X
+XX.* XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX    @  $ X
+XX.* XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X@    X
+XX       $ X
+XX.* XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X @   X
+XX       $ X
+XX.* XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X  @  X
+XX       $ X
+XX.* XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X   @ X
+XX       $ X
+XX.* XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X    @X
+XX       $ X
+XX.* XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX       $@X
+XX.* XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX      $@ X
+XX.* XX $ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX      $  X
+XX.* XX $@XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX      $  X
+XX.* XX$@ XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX      $  X
+XX.* XX$ @XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX      $@ X
+XX.* XX$  XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX     $@  X
+XX.* XX$  XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX    $@   X
+XX.* XX$  XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX   $@    X
+XX.* XX$  XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX  $@     X
+XX.* XX$  XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX $@      X
+XX.* XX$  XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$@       X
+XX.* XX$  XX
+X *. X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$        X
+XX.+ XX$  XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$        X
+XX..@XX$  XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$        X
+XX.. XX$  XX
+X **@X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$        X
+XX.. XX$  XX
+X ** X  XXXX
+X   @   XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$        X
+XX.. XX$  XX
+X ** X  XXXX
+X    @  XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$        X
+XX.. XX$  XX
+X ** X  XXXX
+X     @ XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$        X
+XX.. XX$  XX
+X ** X@ XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$        X
+XX.. XX$  XX
+X ** X @XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$    $   X
+XX.. XX@  XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$    $   X
+XX.. XX @ XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$    $@  X
+XX.. XX   XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$   $@   X
+XX.. XX   XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$  $@    X
+XX.. XX   XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$ $@     X
+XX.. XX   XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$$@      X
+XX.. XX   XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX  @X     X
+XX$$       X
+XX.. XX   XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX @ X     X
+XX$$       X
+XX.. XX   XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX$@       X
+XX.* XX   XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX @ X     X
+XX$        X
+XX.* XX   XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX@  X     X
+XX$        X
+XX.* XX   XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
+XXXXXXXXXXXX
+XX   X     X
+XX@        X
+XX** XX   XX
+X ** X  XXXX
+X       XXXX
+XXXXXXXXXXXX
+
+
+
