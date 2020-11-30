@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 /// <summary>
 /// Sokoban solver (algorithm: brute force, not parallelized)
@@ -32,7 +33,7 @@ public class SokobanSolver
 
     internal class SokobanSingleStep
     {
-        internal double Cost { get; set; }
+        internal int Cost { get; set; }
         internal int HashKey { get; set; }
         internal Direction? Direction { get; set; }
         internal char[][] Map { get; set; }
@@ -96,7 +97,7 @@ public class SokobanSolver
                 }
             }
         }
-        return false;
+            return false;
     }
 
 
@@ -348,18 +349,19 @@ public class SokobanSolver
         {
             return false;
         }
-        int hashCode = GetHashFromMap(map);
-        if (knownPositions.ContainsKey(hashCode))
+        int mapHash = GetHashFromMap(map);
+        int oldMapHash = GetHashFromMap(oldMap);
+        if (knownPositions.ContainsKey(mapHash))
         {
-            var oldWaypoint = knownPositions[GetHashFromMap(oldMap)];
-            var thisWaypoint = knownPositions[hashCode];
+            var oldWaypoint = knownPositions[oldMapHash];
+            var thisWaypoint = knownPositions[mapHash];
             var cost = CalculateWaypointCost(oldWaypoint.Direction, d);
             if (oldWaypoint.Cost + cost < thisWaypoint.Cost)
             {
-                knownPositions[hashCode].Cost = oldWaypoint.Cost + cost;
-                knownPositions[hashCode].Direction = d;
-                knownPositions[hashCode].HashKey = GetHashFromMap(oldMap);
-                knownPositions[hashCode].Map = oldMap;
+                knownPositions[mapHash].Cost = oldWaypoint.Cost + cost;
+                knownPositions[mapHash].Direction = d;
+                knownPositions[mapHash].HashKey = oldMapHash;
+                knownPositions[mapHash].Map = oldMap;
                 return false;
             }
             else
@@ -368,14 +370,14 @@ public class SokobanSolver
         }
         else
         {
-            if (GetHashFromMap(oldMap) != 0)
+            if (oldMapHash != 0)
             {
 
-                var oldWaypoint = knownPositions[GetHashFromMap(oldMap)];
-                knownPositions.Add(hashCode, new SokobanSingleStep()
+                var oldWaypoint = knownPositions[oldMapHash];
+                knownPositions.Add(mapHash, new SokobanSingleStep()
                 {
                     Cost = oldWaypoint.Cost + CalculateWaypointCost(oldWaypoint.Direction, d),
-                    HashKey = GetHashFromMap(oldMap),
+                    HashKey = oldMapHash,
                     Direction = d,
                     Map = oldMap
                 });
@@ -383,10 +385,10 @@ public class SokobanSolver
             }
             else
             {
-                knownPositions.Add(hashCode, new SokobanSingleStep()
+                knownPositions.Add(mapHash, new SokobanSingleStep()
                 {
                     Cost = CalculateWaypointCost(null, d),
-                    HashKey = GetHashFromMap(oldMap),
+                    HashKey = oldMapHash,
                     Direction = d,
                     Map = oldMap
                 });
@@ -399,7 +401,7 @@ public class SokobanSolver
     {
         Straight = 10,
         Corner = 13,
-        Push = 25,
+        Push = 70,
         TurnAround = 15
     }
     private int CalculateWaypointCost(Direction? d1, Direction? d2)
@@ -492,18 +494,17 @@ public class SokobanSolver
     /// <returns>hash value</returns>
     private int GetHashFromMap(char[][] map)
     {
-        string stringMap = "";
+        StringBuilder sb = new StringBuilder();
         if (map == null)
             return 0;
         for (int i = 0; i < map.Length; i++)
         {
             for (int k = 0; k < map[i].Length; k++)
             {
-                stringMap += map[i][k];
+                sb.Append(map[i][k]);
             }
         }
-        return stringMap.GetHashCode();
-
+        return sb.ToString().GetHashCode();
     }
 
     /// <summary>
