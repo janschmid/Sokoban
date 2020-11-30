@@ -25,7 +25,7 @@ class LineFollower:
         
         self.targetSpeed = 600  # deg/sec, [-1000, 1000]
         
-        self.lightThreashold = 40 #when return values of both line sensors is smaller then threashold -> corner
+        self.lightThreashold = 50 #when return values of both line sensors is smaller then threashold -> corner
         self.dt = 10 #ms
         self.stop_action = "coast"
         self.totalCanPushDistance = 920
@@ -56,7 +56,7 @@ class LineFollower:
             sleep(0.1)
         while not self.shut_down:
             # go forward until cross
-            if (pushCan == False and self.lCs.value() + self.rCs.value()< self.lightThreashold and loopCount>25):
+            if (pushCan == False and self.lCs.value() + self.rCs.value()< self.lightThreashold and loopCount>10):
                 # self.lm.run_forever(speed_sp=0)
                 # self.rm.run_forever(speed_sp=0)
                 # print ("Return loop count: {0} with threashold {1}".format(loopCount, self.lCs.value() + self.rCs.value()))
