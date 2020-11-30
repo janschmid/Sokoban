@@ -21,7 +21,7 @@ public class SokobanSolver
     //private HashSet<int> knownPositions;
     private Dictionary<int, SokobanSingleStep> knownPositions;
     private char[][] targetLocation;
-
+    private Direction startDirection = Direction.l;
     /// <summary>
     /// Create new instance of Sokoban solver
     /// </summary>
@@ -32,6 +32,7 @@ public class SokobanSolver
 
     internal class SokobanSingleStep
     {
+        internal double Cost { get; set; }
         internal int HashKey { get; set; }
         internal Direction? Direction { get; set; }
         internal char[][] Map { get; set; }
@@ -49,7 +50,7 @@ public class SokobanSolver
     /// </summary>
     /// <param name="solutionFilePath">File path where content for robot get stored</param>
     /// <param name="debugOutputPath">File path where debug output get's stored (each map iteration, number of steps)</param>
-    public void ExportResults(string solutionFilePath, string debugOutputPath=null)
+    public void ExportResults(string solutionFilePath, string debugOutputPath = null)
     {
         ExportResults(targetLocation, solutionFilePath, debugOutputPath);
     }
@@ -62,10 +63,11 @@ public class SokobanSolver
                 Direction.d,
                 Direction.l,
                 Direction.r
+
             };
         // directions = ["left", "right"]
         char[][] map = Parse(pathToMap);
-        AddMapToHashList(map, null, null);
+        AddMapToHashList(map, null, startDirection);
         List<char[][]> openList = new List<char[][]>(10000000);
 
         openList.Add(map);
@@ -124,13 +126,13 @@ public class SokobanSolver
     internal enum Direction
     {
         u = 0,
-        d = 1,
-        l = 2,
+        l = 1,
+        d = 2,
         r = 3,
         //Direction+=10 if a can get's pushed  
         U = 10,
-        D = 11,
-        L = 12,
+        L = 11,
+        D = 12,
         R = 13
     }
 
@@ -348,12 +350,82 @@ public class SokobanSolver
         }
         int hashCode = GetHashFromMap(map);
         if (knownPositions.ContainsKey(hashCode))
-            return false;
+        {
+            var oldWaypoint = knownPositions[GetHashFromMap(oldMap)];
+            var thisWaypoint = knownPositions[hashCode];
+            var cost = CalculateWaypointCost(oldWaypoint.Direction, d);
+            if (oldWaypoint.Cost + cost < thisWaypoint.Cost)
+            {
+                knownPositions[hashCode].Cost = oldWaypoint.Cost + cost;
+                knownPositions[hashCode].Direction = d;
+                knownPositions[hashCode].HashKey = GetHashFromMap(oldMap);
+                knownPositions[hashCode].Map = oldMap;
+                return false;
+            }
+            else
+                return false;
+
+        }
         else
         {
-            knownPositions.Add(hashCode, new SokobanSingleStep() { HashKey = GetHashFromMap(oldMap), Direction = d, Map = oldMap });
-            return true;
+            if (GetHashFromMap(oldMap) != 0)
+            {
+
+                var oldWaypoint = knownPositions[GetHashFromMap(oldMap)];
+                knownPositions.Add(hashCode, new SokobanSingleStep()
+                {
+                    Cost = oldWaypoint.Cost + CalculateWaypointCost(oldWaypoint.Direction, d),
+                    HashKey = GetHashFromMap(oldMap),
+                    Direction = d,
+                    Map = oldMap
+                });
+                return true;
+            }
+            else
+            {
+                knownPositions.Add(hashCode, new SokobanSingleStep()
+                {
+                    Cost = CalculateWaypointCost(null, d),
+                    HashKey = GetHashFromMap(oldMap),
+                    Direction = d,
+                    Map = oldMap
+                });
+                return true;
+            }
         }
+    }
+
+    enum WaypointCost
+    {
+        Straight = 10,
+        Corner = 13,
+        Push = 25,
+        TurnAround = 15
+    }
+    private int CalculateWaypointCost(Direction? d1, Direction? d2)
+    {
+        if (!d1.HasValue || !d2.HasValue)
+        {
+            return 0;
+        }
+        int cost = 0;
+        if ((int)d2 > 10)
+        {
+            cost += (int)WaypointCost.Push;
+        }
+        if ((int)d1 > 10)
+            d1 -= 10;
+        if ((int)d2 > 10)
+            d2 -= 10;
+        if (d1 == d2)
+            cost += (int)WaypointCost.Straight;
+        else if (((int)d1 - (int)d2) % 2 == 0)
+            cost += (int)WaypointCost.TurnAround;
+        else if (d1 != d2)
+            cost += (int)WaypointCost.Corner;
+        return cost;
+
+
     }
 
     /// <summary>
@@ -385,7 +457,8 @@ public class SokobanSolver
         if (!string.IsNullOrEmpty(debugOutputPath))
         {
             mapWriter = new StreamWriter(debugOutputPath);
-            mapWriter.WriteLine("Steps: " + (path.Count-1));
+            mapWriter.WriteLine("Steps: " + (path.Count - 1));
+            mapWriter.WriteLine("Costs: " + (knownPositions[GetHashFromMap(targetMap)].Cost));
             mapWriter.WriteLine("");
         }
 
@@ -404,10 +477,12 @@ public class SokobanSolver
                     mapWriter.WriteLine(str);
                 str = "";
             }
-            mapWriter.WriteLine(str + "\n\n");
+            if (mapWriter != null)
+                mapWriter.WriteLine(str + "\n\n");
         }
-        mapWriter.Close();
         solutionWriter.Close();
+        if (mapWriter != null)
+            mapWriter.Close();
     }
 
     /// <summary>

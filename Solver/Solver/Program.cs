@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Collections;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Solver
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -20,5 +21,6 @@ namespace Solver
             //solver.Go(Path.Combine(targetPath, "Sokoban_map2019_formatted.txt"));
             solver.ExportResults(Path.Combine(targetPath, "RobotCommands.txt"), Path.Combine(targetPath, "StepDescription.txt"));
         }
+
     }
 }
