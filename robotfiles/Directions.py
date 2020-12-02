@@ -22,9 +22,9 @@ class Turn:
         
         self.speed = -1000  # deg/sec, [-1000, 1000]
         self.stop_action = "hold"
-        self.totalDegreesTurnAround = 415
+        self.totalDegreesTurnAround = 420
         self.totalDegrees = 387
-        self.totalDegreesBackwards = 365*1.2
+        self.totalDegreesBackwards = 360*1.2
 
         turnFactor = 0.89 # if value 0, overshoot
         self.outerDegrees = self.totalDegrees*turnFactor

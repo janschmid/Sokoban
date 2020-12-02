@@ -23,13 +23,12 @@ class LineFollower:
         self.rm = ev3.LargeMotor('outA');  assert self.rm.connected  # right motor
         # mm = ev3.MediumMotor('outD'); assert mm.connected  # medium motor
         
-        self.targetSpeed = 750  # deg/sec, [-1000, 1000]
+        self.targetSpeed = 700  # deg/sec, [-1000, 1000]
         
-        self.lightThreashold = 70 #0=all black =-> will never turn
-        self.dt = 10 #ms
+        self.lightThreashold =70 #0=all black =-> will never turn
         self.stop_action = "coast"
-        self.totalCanPushDistance = 840
-        self.totalBackupDistance = 740
+        self.totalCanPushDistance = 920
+        self.totalBackupDistance = 800
 
 
     def zrun(self, pushCan=False, runBackwards=False):
