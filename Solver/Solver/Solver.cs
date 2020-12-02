@@ -69,35 +69,37 @@ public class SokobanSolver
         // directions = ["left", "right"]
         char[][] map = Parse(pathToMap);
         AddMapToHashList(map, null, startDirection);
-        List<char[][]> openList = new List<char[][]>(10000000);
+        Queue<char[][]> openList = new Queue<char[][]>(100000);
 
-        openList.Add(map);
+        openList.Enqueue(map);
         var watch = System.Diagnostics.Stopwatch.StartNew();
-        for (int i = 0; i < openList.Count; i++)
+        int i = 0;
+        while (openList.Count > 0)
         {
             if (i % 10000 == 0)
-                Console.WriteLine("Iteration: " + i + "       Seconds: " + watch.Elapsed.TotalSeconds);
-
+                Console.WriteLine("Iteration: {0}    Open queue: {2}       Seconds: {1}", i, watch.Elapsed.TotalSeconds, openList.Count);
+            i++;
+            char[][] oldMap = openList.Dequeue();
             foreach (var directionToGo in directions)
             {
                 //required to pass as reference parameter
                 Direction d = directionToGo;
-                char[][] newMap = openList[i].Select(a => a.ToArray()).ToArray();
+                char[][] newMap = oldMap.Select(a => a.ToArray()).ToArray();
                 if (!WalkSokobanSingleStep(newMap, ref d))
                 {
-                    if (newMap != null && AddMapToHashList(newMap, openList[i], d))
-                        openList.Add(newMap);
+                    if (newMap != null && AddMapToHashList(newMap, oldMap, d))
+                        openList.Enqueue(newMap);
                 }
                 else
                 {
                     //we solved it...
-                    AddMapToHashList(newMap, openList[i], d);
+                    AddMapToHashList(newMap, oldMap, d);
                     targetLocation = newMap;
                     return true;
                 }
             }
         }
-            return false;
+        return false;
     }
 
 
@@ -401,7 +403,7 @@ public class SokobanSolver
     {
         Straight = 10,
         Corner = 13,
-        Push = 70,
+        Push = 25,
         TurnAround = 15
     }
     private int CalculateWaypointCost(Direction? d1, Direction? d2)

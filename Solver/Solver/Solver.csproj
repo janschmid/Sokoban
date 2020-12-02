@@ -51,7 +51,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sokoban_map2020.txt">
+    <Content Include="..\Tests\Map 2019\Sokoban_map2019_formatted.txt">
+      <Link>Sokoban_map2019_formatted.txt</Link>
+    </Content>
+    <Content Include="..\Tests\Map 2020\Sokoban_map2020.txt">
+      <Link>Sokoban_map2020.txt</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
