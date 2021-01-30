@@ -26,6 +26,6 @@ steps:
   inputs:
     platform: '$buildPlatform'
     solution: '$(solution)'
-    configuration: '$(buildConfiguration)'
+    configuration: '$buildConfiguration'
     msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
 
