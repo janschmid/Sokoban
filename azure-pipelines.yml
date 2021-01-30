@@ -31,5 +31,6 @@ steps:
 - task: DownloadBuildArtifacts@0
   inputs:
     buildType: 'current'
-    downloadType: 'specific'
+    downloadType: 'single'
+    artifactName: 'Solver.exe'
     downloadPath: '$(System.ArtifactsDirectory)'
