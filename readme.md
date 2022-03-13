@@ -1,5 +1,5 @@
 # Overview
-This work is based on the assignmetn during the AI01 course at the University of Southern Denmark.
+This work is based on the assignment during the AI01 course at the University of Southern Denmark, the full report can be see [here](Artificial_Intelligence_Sokoban.pdf).
 The assignment given, is to create a robot out of Lego Mindstorms which is able to autonomously execute a Sokoban quiz. This includes a solver for the quiz, a design of the physical structure of the robot and to give it the ability to follow lines, push objects and turn on a given map.
 
 # Syntax
