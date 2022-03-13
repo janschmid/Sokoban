@@ -1,0 +1,47 @@
+# attlassian-python-api: https://github.com/atlassian-api/atlassian-python-api/blob/master/pyproject.toml
+
+[tool.black]
+target-version = ['py36', 'py37', 'py38']
+line-length = 120
+include_trailing_comma = false
+include = '(atlassian|examples|tests)\/.*(\.py|GET|POST)'
+
+[tool.poetry]
+name = "masterthesis"
+version = "0.1.0"
+description = ""
+authors = ["Jan-Ruben Schmid <jschm20@student.sdu.dk>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pylint.format]
+max-line-length = 150
+
+[tool.pylint.BASIC]
+# Good variable names which should always be accepted, separated by a comma.
+good-names='''i,
+           j,
+           k,
+           ex,
+           Run,
+           pk,
+           fd,
+           x,
+           y,
+           f,
+           _
+'''
+
+[tool.interrogate]
+exclude = ["setup.py", "docs", "build"]
+fail-under = 100
+ignore-init-method = true
+ignore-init-module = true
+ignore-magic = true

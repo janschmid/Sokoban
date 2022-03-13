@@ -6,6 +6,7 @@ using System.Collections;
 using System.Text;
 using System.Threading.Tasks;
 
+/// Solve the sokoban quiz with the A* algorithm, exports RobotCommands and StepDescription for robot, needs target map as input.
 namespace Solver
 {
     public class Program
